@@ -13,7 +13,12 @@ return new class extends Migration
     {
         Schema::create('book_lendings', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('id_lend');
+            $table->unsignedBigInteger('id_book');
             $table->timestamps();
+
+            $table->foreign('id_lend')->references('id')->on('lends')->onDelete('cascade');
+            $table->foreign('id_book')->references('id')->on('books')->onDelete('cascade');
         });
     }
 
