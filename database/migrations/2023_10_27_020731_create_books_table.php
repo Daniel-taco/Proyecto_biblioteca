@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('title', 100);
             $table->string('author', 100);
             $table->string('isbn', 20)->unique();
-            $table->string('gender', 50);
+            $table->string('genre', 50);
             $table->integer('publication_year');
             $table->integer('available_copies');
             $table->unsignedBigInteger('id_category');
