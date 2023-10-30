@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Rol;
 
 class RolSeeder extends Seeder
 {
@@ -12,6 +13,13 @@ class RolSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        $rol = new Rol();
+        $rol->rol_name = 'Gerente';
+        $rol->save();
+
+
+        $rol = new Rol();
+        $rol->rol_name = 'Cliente';
+        $rol->save();
     }
 }
