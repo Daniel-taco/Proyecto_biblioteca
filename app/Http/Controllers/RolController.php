@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Rol;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class RolController extends Controller
 {
@@ -12,7 +13,8 @@ class RolController extends Controller
      */
     public function index()
     {
-        //
+        $rols = DB::table('rols')->get();
+        return $rols;
     }
 
     /**
@@ -34,9 +36,10 @@ class RolController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Rol $rol)
+    public function show(Request $request)
     {
-        //
+        $rol = Rol::find($request->id);
+        return $rol;
     }
 
     /**

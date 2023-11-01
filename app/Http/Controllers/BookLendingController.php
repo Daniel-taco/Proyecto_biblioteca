@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Book_lending;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class BookLendingController extends Controller
 {
@@ -12,7 +13,8 @@ class BookLendingController extends Controller
      */
     public function index()
     {
-        //
+        $book_lendings = DB::table('book_lendings')->get();
+        return $book_lendings;
     }
 
     /**
@@ -28,7 +30,13 @@ class BookLendingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $book_lending = Book_lending::create([
+            'id_lend' => $request->id_lend,
+            'id_book' => $request->id_book
+        ]);
+        $book_lending->save();
+
+        return $request;
     }
 
     /**

@@ -33,7 +33,7 @@ class UserController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => bycript($request->password),
+            'password' => $request->password,
             'address' => $request->address,
             'phone_number' => $request->phone_number,
         ]);
@@ -48,7 +48,8 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $user = User::find($id);
+        return $user;
     }
 
     /**

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Lend;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class LendController extends Controller
 {
@@ -12,7 +13,8 @@ class LendController extends Controller
      */
     public function index()
     {
-        //
+        $lends = DB::table('lends')->get();
+        return $lends;
     }
 
     /**
@@ -28,7 +30,13 @@ class LendController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $lend = Lend::create([
+            'id_lend' => $request->id_lend,
+            'id_book' => $request->id_book
+        ]);
+        $lend->save();
+
+        return $request;
     }
 
     /**

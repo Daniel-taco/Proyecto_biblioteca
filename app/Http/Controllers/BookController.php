@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class BookController extends Controller
 {
@@ -12,7 +13,8 @@ class BookController extends Controller
      */
     public function index()
     {
-        //
+        $books = DB::table('books')->get();
+        return $books;
     }
 
     /**
@@ -28,7 +30,20 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $book = Book::create([
+            'title' => $request->title,
+            'author' => $request->author,
+            'isbn' => $request->isbn,
+            'genre' => $request->genre,
+            'publication_year' => $request->publication_year,
+            'avalible_copies' => $request->avalible_copies,
+            'id_category' => $request->id_category,
+            'editorial' => $request->editorial,
+            'edition' => $request->edition
+        ]);
+        $book->save();
+
+        return $request;
     }
 
     /**

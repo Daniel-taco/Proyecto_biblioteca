@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Book_category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class BookCategoryController extends Controller
 {
@@ -12,7 +13,8 @@ class BookCategoryController extends Controller
      */
     public function index()
     {
-        //
+        $book_categories = DB::table('book_categories')->get();
+        return $book_categories;
     }
 
     /**
@@ -28,7 +30,13 @@ class BookCategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $category = Book_category::create([
+            'category_name' => $request->category_name,
+            'description' => $request->description,
+        ]);
+        $category->save();
+
+        return $request;
     }
 
     /**
