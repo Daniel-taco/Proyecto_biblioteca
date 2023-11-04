@@ -3,6 +3,7 @@
 use App\Http\Controllers\RolController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\BookController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +24,12 @@ Route::post('/user_show', [UserController::class,'show']);
 Route::get('/user', [UserController::class, 'index']);
 Route::get('/token', [UserController::class, 'token']);
 
+Route::post('/book_store', [BookController::class, 'store']);
+Route::post('/book_show', [BookController::class, 'show']);
+
+
 Route::post('/rol_show', [RolController::class,'show']);
 Route::get('/rol', [RolController::class, 'index']);
+
+Route::post('/book_categories', [BookCategoryController::class,'show']);
 

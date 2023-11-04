@@ -42,9 +42,12 @@ class BookCategoryController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Book_category $book_category)
+    public function show(Request $request)
     {
-        //
+        $category = Book_category::where('title', $request->title)
+            ->orwhere('category_name', $request->category_name)->get();
+        return $category;
+
     }
 
     /**

@@ -36,7 +36,7 @@ class BookController extends Controller
             'isbn' => $request->isbn,
             'genre' => $request->genre,
             'publication_year' => $request->publication_year,
-            'avalible_copies' => $request->avalible_copies,
+            'available_copies' => $request->available_copies,
             'id_category' => $request->id_category,
             'editorial' => $request->editorial,
             'edition' => $request->edition
@@ -49,9 +49,19 @@ class BookController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Book $book)
+    public function show(Request $request)
     {
-        //
+        $book = Book::where('id', $request->id)
+            ->orwhere('author', $request->author)
+            ->orwhere('isbn', $request->isbn)
+            ->orwhere('genre', $request->genre)
+            ->orwhere('publication_year', $request->publication_year)
+            ->orwhere('id_category', $request->id_category)
+            ->orwhere('editorial', $request->editorial)
+            ->orwhere('edition', $request->edition)
+            ->get();
+        return $book;
+
     }
 
     /**
