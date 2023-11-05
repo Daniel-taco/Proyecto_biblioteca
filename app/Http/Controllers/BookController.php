@@ -51,16 +51,43 @@ class BookController extends Controller
      */
     public function show(Request $request)
     {
-        $book = Book::where('id', $request->id)
-            ->orwhere('author', $request->author)
-            ->orwhere('isbn', $request->isbn)
-            ->orwhere('genre', $request->genre)
-            ->orwhere('publication_year', $request->publication_year)
-            ->orwhere('id_category', $request->id_category)
-            ->orwhere('editorial', $request->editorial)
-            ->orwhere('edition', $request->edition)
-            ->get();
-        return $book;
+        $query = Book::query();
+
+    if ($request->has('title')) {
+        $query->where('title', 'like', '%' . $request->input('title') . '%');
+    }
+    
+    if ($request->has('author')) {
+        $query->where('author', 'like', '%' . $request->input('author') . '%');
+    }
+
+    if ($request->has('isbn')) {
+        $query->where('isbn', $request->input('isbn'));
+    }
+
+    if ($request->has('genre')) {
+        $query->where('genre', 'like', '%' . $request->input('genre') . '%');
+    }
+
+    if ($request->has('publication_year')) {
+        $query->where('publication_year', $request->input('publication_year'));
+    }
+
+    if ($request->has('id_category')) {
+        $query->where('id_category', $request->input('id_category'));
+    }
+
+    if ($request->has('editorial')) {
+        $query->where('editorial', 'like', '%' . $request->input('editorial') . '%');
+    }
+
+    if ($request->has('edition')) {
+        $query->where('edition', 'like', '%' . $request->input('edition') . '%');
+    }
+
+    $books = $query->get();
+
+    return response()->json(['books' => $books], 200);
 
     }
 
