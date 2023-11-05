@@ -13,13 +13,13 @@ function Card_C(props) {
             <Card.Body>
                 <Card.Title>ID: {id}</Card.Title>
                 <Card.Subtitle>Nombre: {firstName}</Card.Subtitle>
-                <Card.Text>Email: {email}</Card.Text>
-                <Card.Text>Rol: {id_rol}</Card.Text>
-                <Card.Text>Direccion: {address}</Card.Text>
+                <Card.Text>Email: {email} <br/>
+                Rol: {id_rol}<br/>
+                Direccion: {address}</Card.Text>
                 {/*<Button variant="primary">Go Somewhere</Button>*/}
             </Card.Body>
         </Card>
-    )
+    );
 }
 
 export default Card_C;

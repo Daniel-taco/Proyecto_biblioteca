@@ -1,21 +1,29 @@
-import React from "react";
-import Card_C from "./Card_C";
-import ListCards from "./ListCards";
-import Menu from "./Menu";
-import Login from "./Login";
-import { Navigate, Routes, Route } from "react-router-dom";
+import Container from 'react-bootstrap/Container';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+import { Link, Outlet} from 'react-router-dom';
 
-function Main() {
-    return(
-        <Routes>
-            <Route path="/example-app/public/" element={<Login/>}>
-            
-            <Route path="card" element={<Card_C/>}/>
-            <Route path="listcards" element={<ListCards/>}/>
-            <Route path="*" element={<Navigate replace to="/" />}/>
-            </Route>
-        </Routes>
-    )
+function Menu() {
+  return (
+    <>
+      <Navbar bg="dark" data-bs-theme="dark">
+        <Container>
+          <Navbar.Brand href="#home">Navbar</Navbar.Brand>
+          <Nav className="me-auto">
+            <Nav.Link as={Link} to="">Home</Nav.Link>
+            <Nav.Link as={Link} to="card">Card</Nav.Link>
+            <Nav.Link as={Link} to="listcards">List Cards</Nav.Link>
+          </Nav>
+        </Container>
+      </Navbar>
+      <section>
+        <Container>
+            <Outlet>
+            </Outlet>
+        </Container>
+      </section>
+    </>
+  );
 }
 
-export default Main;
+export default Menu;

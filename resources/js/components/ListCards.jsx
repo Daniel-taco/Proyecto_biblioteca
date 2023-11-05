@@ -8,7 +8,7 @@ function ListCards() {
   const [userData, setUserData]= useState({})
   useEffect(()=>{
     const getUsers = async() =>{
-      await axios.get("http://localhost/example-app/public/api/user_index")
+      await axios.get("http://localhost/Proyecto_biblioteca/public/api/user_index")
       .then(function (response) {
         // manejar respuesta exitosa
         console.log(userData);
@@ -31,7 +31,7 @@ function ListCards() {
       </Spinner>
   
   return (
-    <Stack>
+    <>
       {userData.map((user)=>(
         <Card_C key={user.id}
           id={user.id}
@@ -41,7 +41,7 @@ function ListCards() {
           address= {user.address}
         />
       ))}
-    </Stack>
+    </>
   );
 }
 

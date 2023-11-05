@@ -2,7 +2,9 @@ import React from "react";
 import Card_C from "./Card_C";
 import ListCards from "./ListCards";
 import Menu from "./Menu";
-import { Navigate, Routes } from "react-router-dom";
+import Login from "./Login";
+import { Navigate, Routes, Route } from "react-router-dom";
+
 function Main() {
     return(
         <Routes>
@@ -14,3 +16,5 @@ function Main() {
         </Routes>
     )
 }
+
+export default Main;

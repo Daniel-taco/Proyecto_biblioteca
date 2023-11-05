@@ -17,9 +17,12 @@ use App\Http\Controllers\BookController;
 |
 */
 
-Route::get('/', function () {
+Route::view('/{path?}','welcome')
+    ->where('path','.*');
+
+/* Route::get('/', function () {
     return view('welcome');
-});
+}); */
 Route::post('/user_store', [UserController::class, 'store']);
 Route::post('/user_show', [UserController::class,'show']);
 Route::get('/user', [UserController::class, 'index']);
