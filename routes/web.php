@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\BookCategoryController;
 use App\Http\Controllers\RolController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
