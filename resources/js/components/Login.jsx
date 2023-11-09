@@ -27,7 +27,7 @@ function Login() {
         ).then(response => {
             console.log('response');
             console.log(response);
-            navigate("/Proyecto_biblioteca/public/listcards");
+            navigate("/Proyecto_biblioteca/public/ListCards");
         }).catch(error =>{
             console.log(error);
         });

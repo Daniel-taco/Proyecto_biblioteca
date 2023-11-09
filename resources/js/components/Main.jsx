@@ -8,9 +8,11 @@ import { Navigate, Routes, Route } from "react-router-dom";
 function Main() {
     return(
         <Routes>
-            <Route path="/Proyecto_biblioteca/public/" element={<Menu/>}>
-                <Route path="card" element={<Card_C/>}/>
-                <Route path="listcards" element={<ListCards/>}/>
+            <Route path="/Proyecto_biblioteca/public/ListCards" element={<ListCards/>}></Route>
+
+            <Route path="/Proyecto_biblioteca/public/" element={<Login/>}>
+                <Route path="Card" element={<Card_C/>}/>
+                <Route path="ListCards" element={<ListCards/>}/>
                 <Route path="*" element={<Navigate replace to="/" />}/>
             </Route>
         </Routes>
