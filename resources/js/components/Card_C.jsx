@@ -2,23 +2,36 @@ import React from "react";
 import { Card, Button } from "react-bootstrap";
 
 function Card_C(props) {
-    const firstName = props.name
-    const email = props.email
+    const title = props.title
+    const author = props.author
     const id = props.id
-    const id_rol = props.id_rol
-    const address= props.address
+    const isbn= props.isbn
+    const genre = props.genre
+    const publication_year= props.publication_year
+    const available_copies=props.available_copies
+    const id_category=props.id_category
+    const editorial= props.editorial
+    const edition= props.edition
     return (
-        <Card style={{ width: '18rem' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap'}}>
+        <Card style={{width: '18rem', margin: '10px' }}>
             {/*<Card.Img variant="top" src="holder.js/100px180" />*/}
             <Card.Body>
                 <Card.Title>ID: {id}</Card.Title>
-                <Card.Subtitle>Nombre: {firstName}</Card.Subtitle>
-                <Card.Text>Email: {email} <br/>
-                Rol: {id_rol}<br/>
-                Direccion: {address}</Card.Text>
+                <Card.Subtitle>Title: {title}</Card.Subtitle>
+                <Card.Text>Author: {author} <br/>
+                ISBN: {isbn}<br/>
+                Genre: {genre}<br/>
+                Publication Year: {publication_year}<br/>
+                Available Copies: {available_copies}<br/>
+                Category: {id_category}<br/>
+                Editorial: {editorial}<br/>
+                Edition: {edition}<br/>
+                </Card.Text>
                 {/*<Button variant="primary">Go Somewhere</Button>*/}
             </Card.Body>
         </Card>
+        </div>
     );
 }
 

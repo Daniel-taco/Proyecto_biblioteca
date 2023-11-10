@@ -3,16 +3,17 @@ import ReactDOM from 'react-dom/client';
 import Card_C from './Card_C';
 import axios from 'axios';
 import {Stack, Spinner} from 'react-bootstrap';
+import Menu from './Menu';
 
 function ListCards() {
-  const [userData, setUserData]= useState({})
+  const [bookData, setBookData]= useState({})
   useEffect(()=>{
-    const getUsers = async() =>{
-      await axios.get("http://localhost/Proyecto_biblioteca/public/api/user_index")
+    const getBooks = async() =>{
+      await axios.get("http://localhost/Proyecto_biblioteca/public/api/book_index")
       .then(function (response) {
         // manejar respuesta exitosa
-        console.log(userData);
-        setUserData(response.data);
+        console.log(bookData);
+        setBookData(response.data);
       })
       .catch(function (error) {
         // manejar error
@@ -22,23 +23,28 @@ function ListCards() {
         // siempre sera executado
       });
     }
-    getUsers()
+    getBooks()
   },[])
 
-  if (!userData.length) return
+  if (!bookData.length) return
     <Spinner animation="border" role="status">
         <span className="visually-hidden">Loading...</span>
       </Spinner>
   
   return (
     <>
-      {userData.map((user)=>(
-        <Card_C key={user.id}
-          id={user.id}
-          name={user.name} 
-          email={user.email}
-          id_rol={user.id_rol}
-          address= {user.address}
+      {bookData.map((book)=>(
+        <Card_C key={book.id}
+          id={book.id}
+          title={book.title} 
+          athor={book.author}
+          isbn={book.isbn}
+          genre={book.genre}
+          publication_year= {book.publication_year}
+          available_copies= {book.available_copies}
+          id_category= {book.id_category}
+          editorial= {book.editorial}
+          edition= {book.edition}
         />
       ))}
     </>

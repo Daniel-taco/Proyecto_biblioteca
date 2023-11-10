@@ -36,8 +36,9 @@ class RegisterController extends ResponseController
     public function login(Request $request):JsonResponse{
         if (Auth::attempt(['email' => $request->email, 'password'=>$request->password])) {
             $user = Auth::user();
-            $success['token'] = $user->createToken('MyApp')->accessToken;
+            $success['token'] = $user->createToken('MyApp')->accessToken->token;
             $success['name'] = $user->name;
+            $success['id_rol'] = $user->id_rol;
             return $this->sendRequest($success,
             'User login successfully.');
         }else{
