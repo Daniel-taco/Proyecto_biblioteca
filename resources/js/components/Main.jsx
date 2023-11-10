@@ -4,11 +4,21 @@ import ListCards from "./ListCards";
 import Menu from "./Menu";
 import Login from "./Login";
 import { Navigate, Routes, Route } from "react-router-dom";
+import RegistrationForm from "./RegistrationForm";
 
 function Main() {
     return(
         <Routes>
-            <Route path="/Proyecto_biblioteca/public/login" element={<Login/>}></Route>
+
+            <Route path="/Proyecto_biblioteca/public/" element={<Menu/>}>
+                <Route path="/Proyecto_biblioteca/public/login" element={<Login/>}/>
+            </Route>
+
+
+            <Route path="/Proyecto_biblioteca/public/" element={<Menu/>}>
+                <Route path="/Proyecto_biblioteca/public/register" element={<RegistrationForm />} />
+            </Route>
+
 
             <Route path="/Proyecto_biblioteca/public/" element={<Menu/>}>
                 <Route path="Card" element={<Card_C/>}/>
