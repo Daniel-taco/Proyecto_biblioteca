@@ -24,7 +24,7 @@ Route::view('/{path?}','welcome')
     return view('welcome');
 }); */
 Route::post('/user_store', [UserController::class, 'store']);
-Route::post('/user_show', [UserController::class,'show']);
+Route::post('/user/{id}', [UserController::class,'show']);
 Route::get('/user', [UserController::class, 'index']);
 Route::get('/token', [UserController::class, 'token']);
 
