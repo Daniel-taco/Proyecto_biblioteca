@@ -12,7 +12,6 @@ function Card_C(props) {
       setShowEditModal(false);
     };
     const [categoryName, setCategoryName] = useState('');
-    const key=props.key
     const title = props.title
     const author = props.author
     const id = props.id

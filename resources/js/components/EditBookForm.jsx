@@ -1,5 +1,5 @@
 // EditBookForm.js
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 
 function EditBookForm(props) {
