@@ -5,25 +5,38 @@ import { Button } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 
 const RegistrationForm = () => {
-  const [formData, setFormData] = useState({
+  const [formValue, setformValue] = useState({
     name: '',
     email: '',
+    password: '',
     address: '',
-    phoneNumber: '',
-  });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
+    phone_number: ''
+}) 
+const navigate = useNavigate();
+const onChange = (e) => {
+    e.persist();
+    setformValue({...formValue, [e.target.name]:e.target.value});
+}
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    // Puedes realizar acciones adicionales aquí, como enviar los datos al servidor.
-    console.log('Form data submitted:', formData);
+    if (e && e.preventDefault()) e.preventDefault();
+        const formData = new FormData();
+        formData.append("name", formValue.name)
+        formData.append("email", formValue.email)
+        formData.append("password", formValue.password)
+        formData.append("address", formValue.address)
+        formData.append("phone_number", formValue.phone_number)
+        axios.post("http://localhost/Proyecto_biblioteca/public/api/register", 
+        formData,
+        {headers: {'Content-Type': 'multipart/form-data',
+        'Accept':'application/json'}}
+        ).then(response => {
+            console.log('response');
+            console.log(response);
+            navigate("/Proyecto_biblioteca/public/ListCards");
+        }).catch(error =>{
+            console.log(error);
+        });
   };
 
   return (
@@ -34,8 +47,8 @@ const RegistrationForm = () => {
           type="text"
           placeholder="Enter your name"
           name="name"
-          value={formData.name}
-          onChange={handleChange}
+          value={formValue.name}
+          onChange={onChange}
           required
         />
       </Form.Group>
@@ -46,8 +59,20 @@ const RegistrationForm = () => {
           type="email"
           placeholder="Enter your email"
           name="email"
-          value={formData.email}
-          onChange={handleChange}
+          value={formValue.email}
+          onChange={onChange}
+          required
+        />
+      </Form.Group>
+
+      <Form.Group className="mb-3" controlId="formPassword">
+        <Form.Label>Password</Form.Label>
+        <Form.Control
+          type="password"
+          placeholder="Enter your password"
+          name="password"
+          value={formValue.password}
+          onChange={onChange}
           required
         />
       </Form.Group>
@@ -58,8 +83,8 @@ const RegistrationForm = () => {
           type="text"
           placeholder="Enter your address"
           name="address"
-          value={formData.address}
-          onChange={handleChange}
+          value={formValue.address}
+          onChange={onChange}
           required
         />
       </Form.Group>
@@ -69,9 +94,9 @@ const RegistrationForm = () => {
         <Form.Control
           type="tel"
           placeholder="Enter your phone number"
-          name="phoneNumber"
-          value={formData.phoneNumber}
-          onChange={handleChange}
+          name="phone_number"
+          value={formValue.phone_number}
+          onChange={onChange}
           required
         />
       </Form.Group>

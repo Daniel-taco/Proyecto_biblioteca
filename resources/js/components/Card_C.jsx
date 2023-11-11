@@ -13,7 +13,7 @@ function Card_C(props) {
     const editorial= props.editorial
     const edition= props.edition
     return (
-        <Card style={{width: '18rem', margin: '10px' }}>
+        <Card className="text-center"style={{width: '18rem', margin: '10px' }}>
             {/*<Card.Img variant="top" src="holder.js/100px180" />*/}
             <Card.Body>
                 <Card.Title>ID: {id}</Card.Title>
