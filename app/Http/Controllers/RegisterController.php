@@ -27,7 +27,7 @@ class RegisterController extends ResponseController
         $input = $request->all();
         $input['password'] = bcrypt($input['password']);
         $user = User::create($input);
-        $success['token'] = $user->createToken('MyApp')->accessToken;
+        $success['token'] = $user->createToken('MyApp')->accessToken->token;
         $success['name'] = $user->name;
 
         return $this->sendRequest($success,'User register successfully.');

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BookCategoryController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\UserController;
@@ -21,6 +22,9 @@ Route::post('register',[RegisterController::class,'register']);
 Route::post('login',[RegisterController::class,'login']);
 Route::get('/user_index', [UserController::class, 'index']);
 Route::get('/book_index', [BookController::class,'index']);
+
+
+Route::get('/category_index', [BookCategoryController::class,'index']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

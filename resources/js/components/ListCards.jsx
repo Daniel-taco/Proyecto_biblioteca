@@ -47,6 +47,7 @@ function ListCards() {
           id_category= {book.id_category}
           editorial= {book.editorial}
           edition= {book.edition}
+
         />
       ))}
       </Row>

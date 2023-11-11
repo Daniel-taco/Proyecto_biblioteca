@@ -44,8 +44,7 @@ class BookCategoryController extends Controller
      */
     public function show(Request $request)
     {
-        $category = Book_category::where('title', $request->title)
-            ->orwhere('category_name', $request->category_name)->get();
+        $category = Book_category::where('id', $request->id)->get();
         return $category;
 
     }
