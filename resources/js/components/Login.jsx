@@ -27,7 +27,11 @@ function Login() {
         ).then(response => {
             console.log('response');
             console.log(response);
-            navigate("/Proyecto_biblioteca/public/ListCards");
+            sessionStorage.setItem("token", response.data.data.token)
+            sessionStorage.setItem("id_rol", response.data.data.id_rol);
+            navigate({
+              pathname: "/Proyecto_biblioteca/public",
+            });
         }).catch(error =>{
             console.log(error);
         });

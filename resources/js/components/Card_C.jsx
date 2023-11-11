@@ -1,9 +1,18 @@
 import { useState, useEffect } from "react";
 import React from "react";
 import { Card, Button } from "react-bootstrap";
+import EditBookForm from "./EditBookForm";
 
 function Card_C(props) {
+    const [showEditModal, setShowEditModal] = useState(false);
+    const handleEditClick = () => {
+      setShowEditModal(true);
+    };
+    const handleEditModalClose = () => {
+      setShowEditModal(false);
+    };
     const [categoryName, setCategoryName] = useState('');
+    const key=props.key
     const title = props.title
     const author = props.author
     const id = props.id
@@ -13,6 +22,7 @@ function Card_C(props) {
     const available_copies=props.available_copies
     const editorial= props.editorial
     const edition= props.edition
+    const id_rol = sessionStorage.getItem("id_rol");
 
 
     useEffect(() => {
@@ -52,6 +62,26 @@ function Card_C(props) {
                 </Card.Text>
                 {/*<Button variant="primary">Go Somewhere</Button>*/}
             </Card.Body>
+            {/* Mostrar solo para administradores */}
+      {id_rol === "1" && (    
+          <Button variant="primary" onClick={handleEditClick}>Editar</Button>
+      )}
+
+        <EditBookForm
+          show={showEditModal}
+          onHide={handleEditModalClose}
+          // Pasa las variables necesarias a EditBookForm
+          title={title}
+          author={author}
+          id={id}
+          isbn={isbn}
+          genre={genre}
+          publication_year={publication_year}
+          available_copies={available_copies}
+          editorial={editorial}
+          edition={edition}
+          categoryName={categoryName}
+        />
         </Card>
     );
 }

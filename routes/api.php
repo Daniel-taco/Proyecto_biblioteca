@@ -22,6 +22,7 @@ Route::post('register',[RegisterController::class,'register']);
 Route::post('login',[RegisterController::class,'login']);
 Route::get('/user_index', [UserController::class, 'index']);
 Route::get('/book_index', [BookController::class,'index']);
+Route::post('/book_show', [BookController::class,'show']);
 
 
 Route::get('/category_index', [BookCategoryController::class,'index']);
