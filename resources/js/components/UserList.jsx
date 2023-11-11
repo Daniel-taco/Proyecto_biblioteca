@@ -32,7 +32,7 @@ const UserCard = ({ id, name, email, address, phone, id_rol }) => (
     useEffect(() => {
       const fetchUsers = async () => {
         try {
-          const response = await axios.get('http://localhost:8080/Proyecto_biblioteca/public/api/user_index');
+          const response = await axios.get('http://localhost/Proyecto_biblioteca/public/api/user_index');
           setUsers(response.data);
         } catch (error) {
           console.error('Error fetching users:', error);

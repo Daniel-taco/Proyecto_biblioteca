@@ -17,6 +17,7 @@ function Main() {
         <Route path="ListCards" element={<ListCards />} />
         <Route path="userList" element={<UserList />} />
         <Route path="users/:id" element={<UserCard />} />
+        
         <Route path="*" element={<Navigate replace to="/" />} />
       </Route>
 
