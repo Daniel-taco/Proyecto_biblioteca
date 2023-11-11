@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import Card_C from './Card_C';
 import axios from 'axios';
-import {Stack, Spinner} from 'react-bootstrap';
+import {Stack, Spinner, Container, Row} from 'react-bootstrap';
 import Menu from './Menu';
 
 function ListCards() {
@@ -33,6 +33,8 @@ function ListCards() {
   
   return (
     <>
+    <Container >
+      <Row>
       {bookData.map((book)=>(
         <Card_C key={book.id}
           id={book.id}
@@ -47,7 +49,10 @@ function ListCards() {
           edition= {book.edition}
         />
       ))}
+      </Row>
+    </Container>
     </>
+    
   );
 }
 

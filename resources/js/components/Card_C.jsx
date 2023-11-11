@@ -13,7 +13,6 @@ function Card_C(props) {
     const editorial= props.editorial
     const edition= props.edition
     return (
-        <div style={{ display: 'flex', flexWrap: 'wrap'}}>
         <Card style={{width: '18rem', margin: '10px' }}>
             {/*<Card.Img variant="top" src="holder.js/100px180" />*/}
             <Card.Body>
@@ -31,7 +30,6 @@ function Card_C(props) {
                 {/*<Button variant="primary">Go Somewhere</Button>*/}
             </Card.Body>
         </Card>
-        </div>
     );
 }
 
