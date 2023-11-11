@@ -14,6 +14,7 @@ function Card_C(props) {
     const [categoryName, setCategoryName] = useState('');
     const title = props.title
     const author = props.author
+    const id_category = props.id_category
     const id = props.id
     const isbn= props.isbn
     const genre = props.genre
@@ -79,7 +80,7 @@ function Card_C(props) {
           available_copies={available_copies}
           editorial={editorial}
           edition={edition}
-          categoryName={categoryName}
+          id_category={id_category}
         />
         </Card>
     );

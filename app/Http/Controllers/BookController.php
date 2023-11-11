@@ -104,7 +104,22 @@ class BookController extends Controller
      */
     public function update(Request $request, Book $book)
     {
-        //
+        $book = Book::where('id', $request->id)->first();
+
+        $book->update([
+            'title' => $request->title,
+            'author' => $request->author,
+            'isbn' => $request->isbn,
+            'genre' => $request->genre,
+            'publication_year' => $request->publication_year,
+            'available_copies' => $request->available_copies,
+            'id_category' => $request->id_category,
+            'editorial' => $request->editorial,
+            'edition' => $request->edition
+        ]);
+
+        $book->save();
+        return $book;
     }
 
     /**
