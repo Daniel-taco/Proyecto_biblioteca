@@ -1,9 +1,11 @@
 // EditBookForm.js
 import { useState, useEffect } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function EditBookForm(props) {
+  const navigate = useNavigate();
   const id = props.id
   const [editedTitle, setEditedTitle] = useState(props.title);
   const [editedAuthor, setEditedAuthor] = useState(props.author);
@@ -15,14 +17,6 @@ function EditBookForm(props) {
   const [editedEdition, setEditedEdition] = useState(props.edition);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(props.id_category); // Estado para el ID
-  const [selectedCategoryName, setSelectedCategoryName] = useState(props.categoryName); // Estado para el nombre
-
-  const [reloadComponent, setReloadComponent] = useState(false);
-
-  const handleReload = () => {
-    // Cambia el estado para forzar una nueva renderización del componente
-    setReloadComponent(!reloadComponent);
-  };
 
   // ... Agrega más estados según sea necesario para otras propiedades
 
@@ -62,17 +56,11 @@ function EditBookForm(props) {
         ).then(response => {
             console.log('response');
             console.log(response);
+            navigate("/Proyecto_biblioteca/public/LIstCards");
         }).catch(error =>{
             console.log(error);
         });
     props.onHide();
-    window.location.reload();
-  };
-
-  const handleOnClick = () => {
-    // Llama a ambos métodos
-    handleEdit();
-    handleReload();
   };
 
   return (
@@ -171,7 +159,7 @@ function EditBookForm(props) {
         <Button variant="secondary" onClick={props.onHide}>
           Close
         </Button>
-        <Button variant="primary" onClick={handleOnClick}>
+        <Button variant="primary" onClick={handleEdit}>
           Save Changes
         </Button>
       </Modal.Footer>

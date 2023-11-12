@@ -30,6 +30,7 @@ Route::get('/users/{id}', [UserController::class, 'show']);
 Route::get('/book_index', [BookController::class,'index']);
 Route::post('/book_show', [BookController::class,'show']);
 Route::post('/book_update', [BookController::class,'update']);
+Route::post('/book_delete', [BookController::class,'destroy']);
 
 
 

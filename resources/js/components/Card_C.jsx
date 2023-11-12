@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import React from "react";
 import { Card, Button } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import EditBookForm from "./EditBookForm";
 
 function Card_C(props) {
+    const navigate = useNavigate();
     const [showEditModal, setShowEditModal] = useState(false);
     const handleEditClick = () => {
       setShowEditModal(true);
@@ -43,6 +45,21 @@ function Card_C(props) {
         
             fetchCategoryDetails();
           }, [props.id_category]);
+
+        const handleDelete = () => {
+          axios.post("http://localhost/Proyecto_biblioteca/public/api/book_delete", 
+          {id: id},
+          {headers: {'Content-Type': 'multipart/form-data',
+          'Accept':'application/json'}}
+          ).then(response => {
+            console.log('response');
+            console.log(response);
+            navigate("/Proyecto_biblioteca/public/ListCards");
+            window.location.reload();
+        }).catch(error =>{
+            console.log(error);
+        });
+          };
     
 
     return (
@@ -64,7 +81,12 @@ function Card_C(props) {
             </Card.Body>
             {/* Mostrar solo para administradores */}
       {id_rol === "1" && (    
+        <>
           <Button variant="primary" onClick={handleEditClick}>Editar</Button>
+          <Button variant="danger" onClick={handleDelete}>
+              Eliminar
+            </Button>
+        </>
       )}
 
         <EditBookForm
