@@ -4,10 +4,16 @@ import { Card, ListGroup, ListGroupItem, Row, Col, Button } from 'react-bootstra
 import { useNavigate} from 'react-router-dom';
 
 function UserLends() {
+    const navigate = useNavigate();
+  const token = sessionStorage.getItem("token");
   const userId = sessionStorage.getItem('id');
   const [lends, setLends] = useState([]);
 
   useEffect(() => {
+    if (!token) {
+        navigate("/Proyecto_biblioteca/public/login"); 
+        return; 
+      }
     const fetchLends = async () => {
       try {
         const response = await axios.get('http://localhost/Proyecto_biblioteca/public/api/lend_index');
@@ -19,7 +25,6 @@ function UserLends() {
 
     fetchLends();
   }, []);
-  const navigate = useNavigate();
 
   const handleViewAllLends = () => {
     

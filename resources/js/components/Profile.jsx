@@ -1,14 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 import { Container, Card, Button, Form } from 'react-bootstrap';
 
 function Profile() {
+    const navigate = useNavigate();
+  const token = sessionStorage.getItem("token");
+  const id_rol = sessionStorage.getItem("id_rol");
   const userId = sessionStorage.getItem('id');
   const [userData, setUserData] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [editedUserData, setEditedUserData] = useState(null);
 
   useEffect(() => {
+    if (!token) {
+        navigate("/Proyecto_biblioteca/public/login"); 
+        return; 
+      }
     const fetchUserData = async () => {
       try {
         const response = await axios.get(`http://localhost/Proyecto_biblioteca/public/api/user_show/${userId}`);

@@ -18,7 +18,7 @@ function UserList() {
     if (!token) {
       navigate("/Proyecto_biblioteca/public/login");
     }
-    if (id_rol !== 1){
+    if (id_rol != 1){
       navigate("/Proyecto_biblioteca/public/");
     }
 

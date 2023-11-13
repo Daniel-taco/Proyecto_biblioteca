@@ -21,7 +21,7 @@ function LendList() {
         navigate("/Proyecto_biblioteca/public/login");
       return; 
     }
-    if(id_rol !== 1){
+    if(id_rol != 1){
         navigate("/Proyecto_biblioteca/public/")
     }
 

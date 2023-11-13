@@ -17,13 +17,8 @@ function LendRequestForm() {
   const [showSuccessToast, setShowSuccessToast] = useState(false);
 
   useEffect(() => {
-    const redirectToLogin = () => {
-      navigate('/Proyecto_biblioteca/public/login');
-    };
-
     if (!token) {
-      redirectToLogin();
-      return;
+      navigate('/Proyecto_biblioteca/public/login');
     }
 
     axios
