@@ -15,9 +15,9 @@ function Home() {
     <Container>
       <Row className="mt-5">
         <Col md={12} className="text-center">
-          <h1>Bienvenido a nuestra biblioteca virtual</h1>
+          <h1>Welcome to BiblioTEC</h1>
           <p>
-            Explora nuestra colección de libros y realiza préstamos desde la comodidad de tu hogar.
+            Explore our book collection and borrow books from the comfort of your home.
           </p>
         </Col>
       </Row>
@@ -25,10 +25,10 @@ function Home() {
         <Col md={12}>
           <Card>
             <Card.Body>
-              <Card.Title>Nuestros Servicios</Card.Title>
+              <Card.Title>Our Services</Card.Title>
               <Card.Text>
-                Ofrecemos una amplia variedad de servicios para satisfacer tus necesidades de lectura.
-                Ya sea que estés buscando libros impresos o versiones electrónicas, ¡tenemos algo para todos!
+                We offer a wide variety of services to meet your reading needs.
+                Whether you are looking for print books or electronic versions, we have something for everyone!
               </Card.Text>
             </Card.Body>
           </Card>
@@ -38,10 +38,10 @@ function Home() {
         <Col md={12}>
           <Card>
             <Card.Body>
-              <Card.Title>Descubre Nuevos Libros</Card.Title>
+              <Card.Title>Discover New Books</Card.Title>
               <Card.Text>
-                Explora nuestra vasta colección de libros, desde clásicos atemporales hasta las últimas novedades.
-                Nuestro catálogo está diseñado para satisfacer todos los gustos y géneros.
+                Explore our vast collection of books, from timeless classics to the latest releases.
+                Our catalog is designed to satisfy all tastes and genres.
               </Card.Text>
             </Card.Body>
           </Card>
@@ -51,10 +51,10 @@ function Home() {
         <Col md={12}>
           <Card>
             <Card.Body>
-              <Card.Title>Encuentra tu Próxima Lectura</Card.Title>
+              <Card.Title>Find your Next Reading</Card.Title>
               <Card.Text>
-                Utiliza nuestras herramientas de búsqueda y filtros para encontrar fácilmente tu próxima lectura favorita.
-                Personaliza tus búsquedas por categoría, autor, editorial y más.
+                Use our search tools and filters to easily find your next favorite read.
+                Customize your searches by category, author, publisher and more.
               </Card.Text>
             </Card.Body>
           </Card>
@@ -62,8 +62,8 @@ function Home() {
       </Row>
       <Row className="my-5">
         <Col md={12} className="text-center">
-          <Button variant="primary" href="/Proyecto_biblioteca/public/UserLends">
-            Ver Préstamos
+          <Button variant="primary" href="/Proyecto_biblioteca/public/ListCards">
+            Search Books
           </Button>
         </Col>
       </Row>

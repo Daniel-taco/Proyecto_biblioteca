@@ -87,7 +87,7 @@ function LendRequestForm() {
       }
 
       setShowSuccessToast(true);
-      navigate('/Proyecto_biblioteca/public/ListCards');
+      navigate('/Proyecto_biblioteca/public/UserLends');
     } catch (error) {
       console.error(error);
     }
