@@ -24,6 +24,7 @@ function Menu() {
             <Nav.Link as={Link} to="UserLends">Lends</Nav.Link>
             {id_rol === '1' && (
             <>
+            <Nav.Link as={Link} to="CategoryList">CategoryList</Nav.Link>
             <Nav.Link as={Link} to="LendList">LendList</Nav.Link>
             <Nav.Link as={Link} to="UserList">Users</Nav.Link>
           </>

@@ -62,14 +62,23 @@ class BookCategoryController extends Controller
      */
     public function update(Request $request, Book_category $book_category)
     {
-        //
+        $category = Book_category::where('id', $request->id)->first();
+
+        $category->update([
+            'category_name' => $request->category_name,
+            'description' => $request->description,
+        ]);
+
+        $category->save();
+        return $category;
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Book_category $book_category)
+    public function destroy(Request $request, Book_category $book_category)
     {
-        //
+        $category = Book_category::where('id', $request->id)->delete();
+        return $category;
     }
 }

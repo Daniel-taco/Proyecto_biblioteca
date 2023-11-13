@@ -13,6 +13,8 @@ import Profile from "./Profile";
 import UserLends from "./UserLends";
 import LendList from "./LendList";
 import Home from "./Home";
+import CategoryList from "./CategoryList";
+import AddCategoryForm from "./AddCategoryForm";
 
 function Main() {
   return (
@@ -21,8 +23,10 @@ function Main() {
       <Route path="/Proyecto_biblioteca/public/" element={<Menu />}>
         <Route path="" element={<Home/>} />
         <Route path="ListCards" element={<ListCards />} />
+        <Route path="CategoryList" element={<CategoryList />} />
         <Route path="LendList" element={<LendList />} />
         <Route path="UserList" element={<UserList />} />
+        <Route path="AddCategory" element={<AddCategoryForm/>}/>
         <Route path="AddBook" element={<AddBookForm/>}/>
         <Route path="lends" element={<LendForm/>}/>
         <Route path="profile" element={<Profile/>}/>

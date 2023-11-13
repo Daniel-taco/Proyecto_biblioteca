@@ -39,6 +39,11 @@ Route::post('/lend_show/{id}', [LendController::class,'show']);
 
 Route::post('/book_lending_store', [BookLendingController::class,'store']);
 
+Route::get('/category_index', [BookCategoryController::class,'index']);
+Route::post('/category_store', [BookCategoryController::class,'store']);
+Route::post('/category_update', [BookCategoryController::class,'update']);
+Route::post('/category_delete', [BookCategoryController::class,'destroy']);
+
 
 
 Route::get('/book_index', [BookController::class,'index']);

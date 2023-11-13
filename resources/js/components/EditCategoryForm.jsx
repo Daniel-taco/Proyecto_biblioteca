@@ -1,0 +1,70 @@
+import { useState, useEffect } from "react";
+import { Modal, Button, Form } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
+function EditCategoryForm(props) {
+  const navigate = useNavigate();
+  const id = props.id
+  const [editedCategory_name, setEditedCategory_name] = useState(props.category_name);
+  const [editedDescription, setEditedDescription] = useState(props.description);
+
+  const handleEdit = () => {
+      const updatedCategory = {
+        id: id,
+        category_name: editedCategory_name,
+        description: editedDescription, 
+      };
+    axios.post("http://localhost/Proyecto_biblioteca/public/api/category_update", 
+        updatedCategory,
+        {headers: {'Content-Type': 'multipart/form-data',
+        'Accept':'application/json'}}
+        ).then(response => {
+            console.log('response');
+            console.log(response);
+            window.location.reload();
+            navigate("/Proyecto_biblioteca/public/CategoryList");
+        }).catch(error =>{
+            console.log(error);
+        });
+    props.onHide();
+  };
+
+  return (
+    <Modal show={props.show} onHide={props.onHide}>
+      <Modal.Header closeButton>
+        <Modal.Title>Edit Category</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Form>
+          <Form.Group controlId="formCategoryName">
+            <Form.Label>Category Name</Form.Label>
+            <Form.Control
+              type="text"
+              defaultValue={editedCategory_name}
+              onChange={(e) => setEditedCategory_name(e.target.value)}
+            />
+          </Form.Group>
+          <Form.Group controlId="formDescription">
+            <Form.Label>Description</Form.Label>
+            <Form.Control
+              type="text"
+              value={editedDescription}
+              onChange={(e) => setEditedDescription(e.target.value)}
+            />
+          </Form.Group>
+        </Form>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={props.onHide}>
+          Close
+        </Button>
+        <Button variant="primary" onClick={handleEdit}>
+          Save Changes
+        </Button>
+      </Modal.Footer>
+    </Modal>
+  );
+}
+
+export default EditCategoryForm;
