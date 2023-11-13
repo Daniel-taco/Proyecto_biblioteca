@@ -31,20 +31,30 @@ class LendController extends Controller
     public function store(Request $request)
     {
         $lend = Lend::create([
-            'id_lend' => $request->id_lend,
-            'id_book' => $request->id_book
+            'id_user' => $request->id_user,
+            'lend_date' => $request->lend_date,
+            'expected_return_date' => $request->expected_return_date,
+            'lend_state' => $request->lend_state
         ]);
         $lend->save();
 
-        return $request;
+        return $lend;
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Lend $lend)
+    public function show(request $request, Lend $lend)
     {
-        //
+        $userId = $request->id;
+    
+        if ($userId != $request->user()->id) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        $lends = Lend::where('id_user', $userId)->get();
+
+        return response()->json($lends);
     }
 
     /**
@@ -60,7 +70,17 @@ class LendController extends Controller
      */
     public function update(Request $request, Lend $lend)
     {
-        //
+        $lend = Lend::where('id', $request->id)->first();
+
+        $lend->update([
+            'id_user' => $request->id_user,
+            'lend_date' => $request->lend_date,
+            'expected_return_date' => $request->expected_return_date,
+            'lend_state' => $request->lend_state
+        ]);
+
+        $lend->save();
+        return $lend;
     }
 
     /**

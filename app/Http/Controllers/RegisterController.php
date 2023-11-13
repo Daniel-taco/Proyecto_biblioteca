@@ -29,6 +29,8 @@ class RegisterController extends ResponseController
         $user = User::create($input);
         $success['token'] = $user->createToken('MyApp')->accessToken->token;
         $success['name'] = $user->name;
+        $success['id'] =$user->id;
+        $success['id_rol'] = $user->id_rol;
         return $this->sendRequest($success,'User register successfully.');
     }
 
@@ -37,6 +39,7 @@ class RegisterController extends ResponseController
             $user = Auth::user();
             $success['token'] = $user->createToken('MyApp')->accessToken->token;
             $success['name'] = $user->name;
+            $success['id'] =$user->id;
             $success['id_rol'] = $user->id_rol;
             return $this->sendRequest($success,
             'User login successfully.');

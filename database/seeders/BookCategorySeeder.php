@@ -37,5 +37,10 @@ class BookCategorySeeder extends Seeder
         $book_category->category_name = 'Fantasía';
         $book_category->description = 'Escapa a mundos mágicos y llenos de maravillas, donde los límites de la realidad se desdibujan.';
         $book_category->save();
+
+        $book_category = new Book_category();
+        $book_category->category_name = 'Cuentos';
+        $book_category->description = 'Disfruta de los mejores cuentos relatados.';
+        $book_category->save();
     }
 }

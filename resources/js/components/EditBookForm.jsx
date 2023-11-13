@@ -1,4 +1,3 @@
-// EditBookForm.js
 import { useState, useEffect } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
@@ -10,18 +9,14 @@ function EditBookForm(props) {
   const [editedTitle, setEditedTitle] = useState(props.title);
   const [editedAuthor, setEditedAuthor] = useState(props.author);
   const [editedIsbn, setEditedIsbn] = useState(props.isbn);
-  const [editedGenre, setEditedGenre] = useState(props.genre);
   const [editedPublication_year, setEditedPublication_year] = useState(props.publication_year);
   const [editedAvailable_copies, setEditedAvailable_copies] = useState(props.available_copies);
   const [editedEditorial, setEditedEditorial] = useState(props.editorial);
   const [editedEdition, setEditedEdition] = useState(props.edition);
   const [categories, setCategories] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState(props.id_category); // Estado para el ID
-
-  // ... Agrega más estados según sea necesario para otras propiedades
+  const [selectedCategory, setSelectedCategory] = useState(props.id_category); 
 
   useEffect(() => {
-    // Obtener la lista de categorías de la API
     const fetchCategories = async () => {
       try {
         const response = await axios.get("http://localhost/Proyecto_biblioteca/public/api/category_index");
@@ -41,13 +36,11 @@ function EditBookForm(props) {
         title: editedTitle,
         author: editedAuthor,
         isbn: editedIsbn,
-        genre: editedGenre,
         publication_year: editedPublication_year,
         available_copies: editedAvailable_copies,
         editorial: editedEditorial,
         edition: editedEdition,
-        id_category: selectedCategory, // Enviar solo el ID de la categoría
-        // ... Agrega más propiedades según sea necesario
+        id_category: selectedCategory, 
       };
     axios.post("http://localhost/Proyecto_biblioteca/public/api/book_update", 
         updatedBook,
@@ -56,7 +49,8 @@ function EditBookForm(props) {
         ).then(response => {
             console.log('response');
             console.log(response);
-            navigate("/Proyecto_biblioteca/public/LIstCards");
+            window.location.reload();
+            navigate("/Proyecto_biblioteca/public/ListCards");
         }).catch(error =>{
             console.log(error);
         });
@@ -92,14 +86,6 @@ function EditBookForm(props) {
               type="text"
               value={editedIsbn}
               onChange={(e) => setEditedIsbn(e.target.value)}
-            />
-          </Form.Group>
-          <Form.Group controlId="formGenre">
-            <Form.Label>Genre</Form.Label>
-            <Form.Control
-              type="text"
-              value={editedGenre}
-              onChange={(e) => setEditedGenre(e.target.value)}
             />
           </Form.Group>
           <Form.Group controlId="formPublicationYear">
@@ -151,8 +137,6 @@ function EditBookForm(props) {
               ))}
             </Form.Control>
           </Form.Group>
-
-          {/* ... Agrega más campos según sea necesario para otras propiedades */}
         </Form>
       </Modal.Body>
       <Modal.Footer>

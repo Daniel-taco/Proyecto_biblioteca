@@ -6,28 +6,31 @@ import axios from 'axios';
 import {Stack, Spinner, Container, Row, Button, Form, Col} from 'react-bootstrap';
 import Menu from './Menu';
 import AddBookForm from './AddBookForm';
+import LendCard from './LendCard';
 
-function UserList() {
+function LendList() {
   
   const navigate = useNavigate();
   const token = sessionStorage.getItem("token");
   const id_rol = sessionStorage.getItem("id_rol");
   
-  const [userData, setUserData] = useState([]);
+  const [lendData, setLendData] = useState([]);
   useEffect(()=>{
+
     if (!token) {
-      navigate("/Proyecto_biblioteca/public/login");
+        navigate("/Proyecto_biblioteca/public/login");
+      return; 
     }
-    if (id_rol !== 1){
-      navigate("/Proyecto_biblioteca/public/");
+    if(id_rol !== 1){
+        navigate("/Proyecto_biblioteca/public/")
     }
 
-    const getUsers = async() =>{
-      await axios.get("http://localhost/Proyecto_biblioteca/public/api/user_index")
+    const getLends = async() =>{
+      await axios.get("http://localhost/Proyecto_biblioteca/public/api/lend_index")
       .then(function (response) {
         // manejar respuesta exitosa
-        console.log(userData);
-        setUserData(response.data);
+        console.log(lendData);
+        setLendData(response.data);
       })
       .catch(function (error) {
         // manejar error
@@ -37,14 +40,14 @@ function UserList() {
         // siempre sera executado
       }); 
     }
-    getUsers()
+    getLends()
   },[token, navigate])
 
   /*const handleAddBookClick = () => {
     navigate('/Proyecto_biblioteca/public/AddBook');
   };*/
 
-  if (!userData.length) return (
+  if (!lendData.length) return (
     <Spinner animation="border" role="status">
         <span className="visually-hidden">Loading...</span>
       </Spinner>
@@ -53,13 +56,13 @@ function UserList() {
     <>
     <Container >
       <Row>
-      {userData.map((user) => (
-        <UserCard key={user.id}
-          id={user.id}
-          name={user.name} 
-          email={user.email}
-          address={user.address}
-          phone_number= {user.phone_number}
+      {lendData.map((lend) => (
+        <LendCard key={lend.id}
+          id={lend.id}
+          id_user={lend.id_user} 
+          lend_date={lend.lend_date}
+          expected_return_date={lend.expected_return_date}
+          lend_state= {lend.lend_state}
         />
       ))}
       </Row>
@@ -71,5 +74,5 @@ function UserList() {
 }
 
 
-export default UserList;
+export default LendList;
   

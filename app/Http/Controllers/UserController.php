@@ -49,7 +49,12 @@ class UserController extends Controller
     public function show(string $id)
     {
         $user = User::find($id);
-        return $user;
+
+        if ($user) {
+            return response()->json($user);
+        } else {
+            return response()->json(['error' => 'Usuario no encontrado'], 404);
+        }
     }
 
     /**
@@ -65,15 +70,26 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $user = User::where('id', $request->id)->first();
+
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'address' => $request->address,
+            'phone_number' => $request->phone_number
+        ]);
+
+        $user->save();
+        return $user;
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request)
     {
-        //
+        $user = User::where('id', $request->id)->delete();
+        return $user;
     }
     public function token(){
         return csrf_token();

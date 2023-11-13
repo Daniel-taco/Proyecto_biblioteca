@@ -19,7 +19,6 @@ function Card_C(props) {
     const id_category = props.id_category
     const id = props.id
     const isbn= props.isbn
-    const genre = props.genre
     const publication_year= props.publication_year
     const available_copies=props.available_copies
     const editorial= props.editorial
@@ -66,11 +65,10 @@ function Card_C(props) {
         <Card className="text-center"style={{width: '18rem', margin: '10px' }}>
             {/*<Card.Img variant="top" src="holder.js/100px180" />*/}
             <Card.Body>
-                <Card.Title>ID: {id}</Card.Title>
                 <Card.Subtitle>Title: {title}</Card.Subtitle>
+                <hr/>
                 <Card.Text>Author: {author} <br/>
                 ISBN: {isbn}<br/>
-                Genre: {genre}<br/>
                 Publication Year: {publication_year}<br/>
                 Available Copies: {available_copies}<br/>
                 Category: {categoryName}<br/>
@@ -79,16 +77,14 @@ function Card_C(props) {
                 </Card.Text>
                 {/*<Button variant="primary">Go Somewhere</Button>*/}
             </Card.Body>
-            {/* Mostrar solo para administradores */}
       {id_rol === "1" && (    
         <>
-          <Button variant="primary" onClick={handleEditClick}>Editar</Button>
+          <Button variant="primary" onClick={handleEditClick}>Edit</Button>
           <Button variant="danger" onClick={handleDelete}>
-              Eliminar
+              Delete
             </Button>
         </>
       )}
-
         <EditBookForm
           show={showEditModal}
           onHide={handleEditModalClose}
@@ -97,7 +93,6 @@ function Card_C(props) {
           author={author}
           id={id}
           isbn={isbn}
-          genre={genre}
           publication_year={publication_year}
           available_copies={available_copies}
           editorial={editorial}

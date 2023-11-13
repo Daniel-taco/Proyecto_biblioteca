@@ -1,68 +1,111 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { Button } from "react-bootstrap";
-import Form from "react-bootstrap/Form";
+import { useNavigate, Link } from "react-router-dom";
+import { Button, Form, Container, Row, Col } from "react-bootstrap";
+import Biblioteca from '../../../public/biblioteca.jpg'
 
 function Login() {
-    const [formValue, setformValue] = useState({
-        email: '',
-        password: ''
-    }) 
-    const navigate = useNavigate();
-    const onChange = (e) => {
-        e.persist();
-        setformValue({...formValue, [e.target.name]:e.target.value});
-    }
+  const [formValue, setformValue] = useState({
+    email: "",
+    password: "",
+  });
+  const navigate = useNavigate();
+  const onChange = (e) => {
+    e.persist();
+    setformValue({ ...formValue, [e.target.name]: e.target.value });
+  };
 
-    const handleSubmit = (e) => {
-        if (e && e.preventDefault()) e.preventDefault();
-        const formData = new FormData();
-        formData.append("email", formValue.email)
-        formData.append("password", formValue.password)
-        axios.post("http://localhost/Proyecto_biblioteca/public/api/login", 
-        formData,
-        {headers: {'Content-Type': 'multipart/form-data',
-        'Accept':'application/json'}}
-        ).then(response => {
-            console.log('response');
-            console.log(response);
-            sessionStorage.setItem("token", response.data.data.token)
-            sessionStorage.setItem("id_rol", response.data.data.id_rol);
-            navigate({
-              pathname: "/Proyecto_biblioteca/public",
-            });
-        }).catch(error =>{
-            console.log(error);
+  const handleSubmit = (e) => {
+    if (e && e.preventDefault()) e.preventDefault();
+    const formData = new FormData();
+    formData.append("email", formValue.email);
+    formData.append("password", formValue.password);
+    axios
+      .post("http://localhost/Proyecto_biblioteca/public/api/login", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Accept: "application/json",
+        },
+      })
+      .then((response) => {
+        console.log("response");
+        console.log(response);
+        sessionStorage.setItem("token", response.data.data.token);
+        sessionStorage.setItem("id", response.data.data.id);
+        sessionStorage.setItem("id_rol", response.data.data.id_rol);
+        navigate({
+          pathname: "/Proyecto_biblioteca/public",
         });
-    };
-    return (
-      <div style={{ display: 'flex', justifyContent: 'center', height: '100vh' }}>
-        <Form onSubmit={handleSubmit} >
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  return (
+    <>
+    <div style={{ 
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                backgroundImage: `url(${Biblioteca})`,
+                backgroundSize: 'cover',
+                backgroundRepeat: 'no-repeat',
+                opacity: 0.7,  
+                zIndex: -1,   
+            }}>
+                
+    </div>
+    <Container className="mt-5">
+      <Row className="mb-4">
+        <Col className="text-center">
+          <Link to="/Proyecto_biblioteca/public/register">
+            <Button variant="link" style={{ color:'black'}}>You don't have an account? Register</Button>
+          </Link>
+        </Col>
+      </Row>
+      <Row className="justify-content-center">
+        <Col xs={12} sm={10} md={8} lg={6}>
+          <Form onSubmit={handleSubmit} style={{ color:'black', borderColor:'black',border: '1px solid black',borderRadius: '8px',boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',padding:'5%',marginTop: '20%',zIndex:'+1', backgroundColor:'white'}}>
             <Form.Group className="mb-3">
-              <Form.Label style={{ fontSize: '24px', fontWeight: 'bold' }}>Sing In</Form.Label>
+              <Form.Label style={{ fontSize: "24px", fontWeight: "bold" }}>
+                Sign In
+              </Form.Label>
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>Email address</Form.Label>
-              <Form.Control type="email" placeholder="Enter email" 
-              name="email" value={formValue.email} onChange={onChange}/>
+              <Form.Control
+                type="email"
+                placeholder="Enter email"
+                name="email"
+                value={formValue.email}
+                onChange={onChange}
+              />
               <Form.Text className="text-muted">
                 We'll never share your email with anyone else.
               </Form.Text>
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicPassword">
               <Form.Label>Password</Form.Label>
-              <Form.Control type="password" placeholder="Password" 
-              name="password" value={formValue.password} onChange={onChange}/>
+              <Form.Control
+                type="password"
+                placeholder="Password"
+                name="password"
+                value={formValue.password}
+                onChange={onChange}
+              />
             </Form.Group>
-            <Button variant="primary" type="submit">
+            <Button variant="primary" type="submit" className="w-100 mt-3">
               Submit
             </Button>
-            
-        </Form>  
-        </div>
-        
-    );
+          </Form>
+        </Col>
+      </Row>
+    </Container>
+    </>
+  );
 }
 
 export default Login;

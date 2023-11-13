@@ -110,7 +110,6 @@ class BookController extends Controller
             'title' => $request->title,
             'author' => $request->author,
             'isbn' => $request->isbn,
-            'genre' => $request->genre,
             'publication_year' => $request->publication_year,
             'available_copies' => $request->available_copies,
             'id_category' => $request->id_category,
@@ -129,5 +128,16 @@ class BookController extends Controller
     {
         $book = Book::where('id', $request->id)->delete();
         return $book;
+    }
+    public function decrementCopies($id)
+    {
+        $book = Book::find($id);
+
+        if ($book) {
+            $book->decrement('available_copies');
+            return response()->json(['message' => 'Campo available_copies decrementado con éxito'], 200);
+        }
+
+        return response()->json(['error' => 'Libro no encontrado'], 404);
     }
 }

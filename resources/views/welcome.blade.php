@@ -19,6 +19,10 @@
         integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
         crossorigin="anonymous"/>
 
+        <link rel="icon" href="{{ asset('icono.png') }}" type="image/png">
+        <link rel="shortcut icon" href="{{ asset('icono.png') }}" type="image/png">
+
+
         @viteReactRefresh
         @vite('resources/js/app.jsx')
     </head>
