@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { MyContext } from "../Context";
 import { Form, Button, Alert, Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 function AddBookForm() {
   const navigate = useNavigate();
-  const token = sessionStorage.getItem("token");
-  const id_rol = sessionStorage.getItem("id_rol");
+  const { token, id_rol } = useContext(MyContext);
   const [formData, setFormData] = useState({
     title: '',
     author: '',
@@ -20,11 +20,16 @@ function AddBookForm() {
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-   
+
     const fetchCategories = async () => {
       try {
         const response = await axios.get(
-          'http://localhost/Proyecto_biblioteca/public/api/category_index'
+          'http://localhost/Proyecto_biblioteca/public/api/category_index', {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        }
         );
         setCategories(response.data);
       } catch (error) {
@@ -33,12 +38,14 @@ function AddBookForm() {
     };
     if (!token) {
       navigate("/Proyecto_biblioteca/public/login");
-    return; 
+      console.log(token)
+      return;
     }
-    if (id_rol != 1){
+    if (id_rol != 1) {
       navigate("/Proyecto_biblioteca/public/")
+      console.log(id_rol)
     }
-    
+
 
     fetchCategories();
   }, []);
@@ -55,9 +62,8 @@ function AddBookForm() {
         {
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${sessionStorage.getItem('token')}`,
-          },
-        }
+            Authorization: `Bearer ${token}`,
+          }}
       );
       console.log(response);
       navigate('/Proyecto_biblioteca/public/ListCards');

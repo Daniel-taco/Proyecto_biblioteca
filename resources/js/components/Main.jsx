@@ -1,12 +1,10 @@
 import React from "react";
-import Card_C from "./Card_C";
 import ListCards from "./ListCards";
 import Menu from "./Menu";
 import Login from "./Login";
 import { Navigate, Routes, Route } from "react-router-dom";
 import RegistrationForm from "./RegistrationForm";
 import UserList from "./UserList";
-import UserCard from "./UserCard";
 import AddBookForm from "./AddBookForm";
 import LendForm from "./LendForm";
 import Profile from "./Profile";

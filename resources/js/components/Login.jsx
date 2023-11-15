@@ -1,10 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import axios from "axios";
+import { MyContext } from "../Context";
 import { useNavigate, Link } from "react-router-dom";
 import { Button, Form, Container, Row, Col } from "react-bootstrap";
 import Biblioteca from '../../../public/biblioteca.jpg'
 
 function Login() {
+  const { token, setGlobalToken } = useContext(MyContext);
+  const { id, setGlobalId } = useContext(MyContext);
+  const { id_rol, setGlobalId_rol } = useContext(MyContext);
   const [formValue, setformValue] = useState({
     email: "",
     password: "",
@@ -20,19 +24,18 @@ function Login() {
     const formData = new FormData();
     formData.append("email", formValue.email);
     formData.append("password", formValue.password);
-    axios
-      .post("http://localhost/Proyecto_biblioteca/public/api/login", formData, {
+    axios.post("http://localhost/Proyecto_biblioteca/public/api/login", formData, 
+    {
         headers: {
-          "Content-Type": "multipart/form-data",
           Accept: "application/json",
         },
       })
       .then((response) => {
         console.log("response");
         console.log(response);
-        sessionStorage.setItem("token", response.data.data.token);
-        sessionStorage.setItem("id", response.data.data.id);
-        sessionStorage.setItem("id_rol", response.data.data.id_rol);
+        setGlobalToken(response.data.token);
+        setGlobalId(response.data.id);
+        setGlobalId_rol(response.data.id_rol);
         navigate({
           pathname: "/Proyecto_biblioteca/public",
         });

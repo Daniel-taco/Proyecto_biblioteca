@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import ReactDOM from 'react-dom/client';
-import UserCard from './UserCard';
+import React, { useEffect, useState, useContext } from 'react';
+import { MyContext } from '../Context';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
-import {Stack, Spinner, Container, Row, Button, Form, Col} from 'react-bootstrap';
-import Menu from './Menu';
-import AddBookForm from './AddBookForm';
+import { Spinner, Container, Row} from 'react-bootstrap';
 import LendCard from './LendCard';
 
 function LendList() {
-  
+  const [refresh, setRefresh] = useState(false);
   const navigate = useNavigate();
-  const token = sessionStorage.getItem("token");
-  const id_rol = sessionStorage.getItem("id_rol");
+  const { token, id_rol } = useContext(MyContext);
+
+  const updateComponent = () => {
+    setRefresh(!refresh);
+  };
   
   const [lendData, setLendData] = useState([]);
   useEffect(()=>{
@@ -26,7 +26,12 @@ function LendList() {
     }
 
     const getLends = async() =>{
-      await axios.get("http://localhost/Proyecto_biblioteca/public/api/lend_index")
+      await axios.get("http://localhost/Proyecto_biblioteca/public/api/lend_index", {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        }
+      })
       .then(function (response) {
         // manejar respuesta exitosa
         console.log(lendData);
@@ -41,7 +46,7 @@ function LendList() {
       }); 
     }
     getLends()
-  },[token, navigate])
+  },[token, navigate, refresh])
 
   /*const handleAddBookClick = () => {
     navigate('/Proyecto_biblioteca/public/AddBook');
@@ -63,6 +68,7 @@ function LendList() {
           lend_date={lend.lend_date}
           expected_return_date={lend.expected_return_date}
           lend_state= {lend.lend_state}
+          updateComponent= {updateComponent}
         />
       ))}
       </Row>

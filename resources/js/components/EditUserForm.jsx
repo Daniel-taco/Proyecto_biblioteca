@@ -1,9 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useContext } from "react";
+import { MyContext } from "../Context";
 import { Modal, Button, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function EditUserForm(props) {
+  const { token } = useContext(MyContext);
   const navigate = useNavigate();
   const id = props.id
   const [editedName, setEditedName] = useState(props.name);
@@ -22,12 +24,16 @@ function EditUserForm(props) {
       };
     axios.post(`http://localhost/Proyecto_biblioteca/public/api/user_update/${id}`, 
         updatedUser,
-        {headers: {'Content-Type': 'multipart/form-data',
-        'Accept':'application/json'}}
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          }
+        }
         ).then(response => {
             console.log('response');
             console.log(response);
-            window.location.reload();
+            props.updateComponent();
             navigate("/Proyecto_biblioteca/public/UserList");
         }).catch(error =>{
             console.log(error);

@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { MyContext } from "../Context";
 import { Form, Button, Alert, Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 function AddCategoryForm() {
   const navigate = useNavigate();
-  const token = sessionStorage.getItem("token");
-  const id_rol = sessionStorage.getItem("id_rol");
+  const { token, id_rol } = useContext(MyContext);
   const [formData, setFormData] = useState({
     category_name: '',
     description: '',
@@ -37,7 +37,7 @@ function AddCategoryForm() {
         {
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );

@@ -1,48 +1,61 @@
-import React, { useEffect, useState } from 'react';
-import ReactDOM from 'react-dom/client';
+import React, { useEffect, useState, useContext } from 'react';
+import { MyContext } from '../Context';
 import Card_C from './Card_C';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
-import {Stack, Spinner, Container, Row, Button, Form, Col} from 'react-bootstrap';
-import Menu from './Menu';
-import AddBookForm from './AddBookForm';
+import { Spinner, Container, Row, Button, Form, Col } from 'react-bootstrap';
+
 
 function ListCards() {
-  
+  const [refresh, setRefresh] = useState(false);
   const navigate = useNavigate();
-  const token = sessionStorage.getItem("token");
-  const id_rol = sessionStorage.getItem("id_rol");
-  
+  const { token, id_rol } = useContext(MyContext);
   const [bookData, setBookData] = useState([]);
   const [categories, setCategories] = useState([]);
   const [categoryFilter, setCategoryFilter] = useState('');
   const [editorialFilter, setEditorialFilter] = useState('');
   const [editionFilter, setEditionFilter] = useState('');
   const [titleFilter, setTitleFilter] = useState('')
-  useEffect(()=>{
+
+  const updateComponent = () => {
+    setRefresh(!refresh);
+  };
+  
+  useEffect(() => {
     if (!token) {
       navigate("/Proyecto_biblioteca/public/login");
-      return; 
+      return;
     }
 
-    const getBooks = async() =>{
-      await axios.get("http://localhost/Proyecto_biblioteca/public/api/book_index")
-      .then(function (response) {
-        // manejar respuesta exitosa
-        console.log(bookData);
-        setBookData(response.data);
-      })
-      .catch(function (error) {
-        // manejar error
-        console.log(error);
-      })
-      .finally(function () {
-        // siempre sera executado
-      }); 
+    const getBooks = async () => {
+      await axios.get("http://localhost/Proyecto_biblioteca/public/api/book_index",
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          }
+        })
+        .then(function (response) {
+          // manejar respuesta exitosa
+          console.log(bookData);
+          setBookData(response.data);
+        })
+        .catch(function (error) {
+          // manejar error
+          console.log(error);
+        })
+        .finally(function () {
+          // siempre sera executado
+        });
     }
     const fetchCategories = async () => {
       try {
-        const response = await axios.get('http://localhost/Proyecto_biblioteca/public/api/category_index');
+        const response = await axios.get('http://localhost/Proyecto_biblioteca/public/api/category_index', {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          }
+        });
         setCategories(response.data);
       } catch (error) {
         console.error(error);
@@ -50,7 +63,7 @@ function ListCards() {
     };
     fetchCategories();
     getBooks()
-  },[token, navigate])
+  }, [token, navigate, refresh])
 
   const handleAddBookClick = () => {
     navigate('/Proyecto_biblioteca/public/AddBook');
@@ -58,9 +71,9 @@ function ListCards() {
 
   if (!bookData.length) return (
     <Spinner animation="border" role="status">
-        <span className="visually-hidden">Loading...</span>
-      </Spinner>
-      )
+      <span className="visually-hidden">Loading...</span>
+    </Spinner>
+  )
   const filteredBooks = bookData.filter((book) => {
     return (
       (categoryFilter === '' || book.id_category.toString() === categoryFilter) &&
@@ -71,8 +84,8 @@ function ListCards() {
   });
   return (
     <>
-    <Container >
-    <Form className="form-inline">
+      <Container >
+        <Form className="form-inline">
           <Row>
             <Col md={3} className="mb-2">
               <Form.Group controlId="formCategoryFilter">
@@ -125,32 +138,33 @@ function ListCards() {
             </Col>
           </Row>
         </Form>
-        <hr/>
-        {id_rol === '1' && (
-        <Button variant="primary" style={{ backgroundColor: 'green', color: 'white' }} onClick={handleAddBookClick}>
-          Add Book
-        </Button>
-      )}
-      <Row>
-      {filteredBooks.map((book) => (
-        <Card_C key={book.id}
-          id={book.id}
-          title={book.title} 
-          author={book.author}
-          isbn={book.isbn}
-          publication_year= {book.publication_year}
-          available_copies= {book.available_copies}
-          id_category= {book.id_category}
-          editorial= {book.editorial}
-          edition= {book.edition}
-        />
-      ))}
-      </Row>
-    </Container>
+        <hr />
+        {id_rol == '1' && (
+          <Button variant="primary" style={{ backgroundColor: 'green', color: 'white' }} onClick={handleAddBookClick}>
+            Add Book
+          </Button>
+        )}
+        <Row>
+          {filteredBooks.map((book) => (
+            <Card_C key={book.id}
+              id={book.id}
+              title={book.title}
+              author={book.author}
+              isbn={book.isbn}
+              publication_year={book.publication_year}
+              available_copies={book.available_copies}
+              id_category={book.id_category}
+              editorial={book.editorial}
+              edition={book.edition}
+              updateComponent={updateComponent}
+            />
+          ))}
+        </Row>
+      </Container>
     </>
-    
+
   );
-  
+
 }
 
 

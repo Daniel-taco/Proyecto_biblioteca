@@ -1,25 +1,30 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { MyContext } from '../Context';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import { Container, Card, Button, Form } from 'react-bootstrap';
 
 function Profile() {
-    const navigate = useNavigate();
-  const token = sessionStorage.getItem("token");
-  const id_rol = sessionStorage.getItem("id_rol");
-  const userId = sessionStorage.getItem('id');
+  const navigate = useNavigate();
+  const { token, id } = useContext(MyContext);
+  const userId = id;
   const [userData, setUserData] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [editedUserData, setEditedUserData] = useState(null);
 
   useEffect(() => {
     if (!token) {
-        navigate("/Proyecto_biblioteca/public/login"); 
-        return; 
-      }
+      navigate("/Proyecto_biblioteca/public/login");
+      return;
+    }
     const fetchUserData = async () => {
       try {
-        const response = await axios.get(`http://localhost/Proyecto_biblioteca/public/api/user_show/${userId}`);
+        const response = await axios.get(`http://localhost/Proyecto_biblioteca/public/api/user_show/${userId}`, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          }
+        });
         setUserData(response.data);
         setEditedUserData(response.data);
       } catch (error) {
@@ -45,8 +50,8 @@ function Profile() {
         {
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${sessionStorage.getItem('token')}`,
-          },
+            Authorization: `Bearer ${token}`,
+          }
         }
       );
 
@@ -76,8 +81,8 @@ function Profile() {
           <Card.Body>
             <Card.Title>{userData.name}</Card.Title>
             <Card.Text>
-              <strong>Email:</strong> {userData.email} <br/>
-              <strong>Address:</strong> {userData.address}<br/>
+              <strong>Email:</strong> {userData.email} <br />
+              <strong>Address:</strong> {userData.address}<br />
               <strong>Phone Number:</strong> {userData.phone_number}
             </Card.Text>
             <Button variant="primary" onClick={handleEdit}>

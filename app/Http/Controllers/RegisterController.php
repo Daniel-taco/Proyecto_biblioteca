@@ -1,9 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Validator;
 //use Illuminate\Support\Facades\Validator;
 
@@ -27,25 +26,44 @@ class RegisterController extends ResponseController
         $input = $request->all();
         $input['password'] = bcrypt($input['password']);
         $user = User::create($input);
-        $success['token'] = $user->createToken('MyApp')->accessToken->token;
-        $success['name'] = $user->name;
-        $success['id'] =$user->id;
-        $success['id_rol'] = $user->id_rol;
-        return $this->sendRequest($success,'User register successfully.');
+        $token = $user->createToken('Token')->accessToken;
+        $id =$user->id;
+        $id_rol = $user->id_rol;
+        return response()->json([
+            'token' => $token,
+            'id' => $id,
+            'id_rol' => $id_rol,
+            'message' => 'Login successful',
+        ], 200);
     }
 
     public function login(Request $request):JsonResponse{
         if (Auth::attempt(['email' => $request->email, 'password'=>$request->password])) {
             $user = Auth::user();
-            $success['token'] = $user->createToken('MyApp')->accessToken->token;
-            $success['name'] = $user->name;
-            $success['id'] =$user->id;
-            $success['id_rol'] = $user->id_rol;
-            return $this->sendRequest($success,
-            'User login successfully.');
+            $token = $user->createToken('Token')->accessToken;
+            $id =$user->id;
+            $id_rol = $user->id_rol;
+            return response()->json([
+                'token' => $token,
+                'id' => $id,
+                'id_rol' => $id_rol,
+                'message' => 'Login successful',
+            ], 200);
         }else{
             return $this->sendError('Unauthorized.',
             ['error'=>'Unauthorized']);
         }
+    }
+
+    public function logout(Request $request): JsonResponse
+    {
+        $user = Auth::user();
+
+        if ($user) {
+            $user->token()->revoke();
+            return $this->sendResponse([], 'Logout successful');
+        }
+
+        return $this->sendError('Unauthorized.', ['error' => 'Unauthorized']);
     }
 }

@@ -1,9 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { MyContext } from "../Context";
 import { Modal, Button, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function EditBookForm(props) {
+  const { token } = useContext(MyContext);
   const navigate = useNavigate();
   const id = props.id
   const [editedTitle, setEditedTitle] = useState(props.title);
@@ -14,12 +16,17 @@ function EditBookForm(props) {
   const [editedEditorial, setEditedEditorial] = useState(props.editorial);
   const [editedEdition, setEditedEdition] = useState(props.edition);
   const [categories, setCategories] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState(props.id_category); 
+  const [selectedCategory, setSelectedCategory] = useState(props.id_category);
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get("http://localhost/Proyecto_biblioteca/public/api/category_index");
+        const response = await axios.get("http://localhost/Proyecto_biblioteca/public/api/category_index", {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          }
+        });
         setCategories(response.data);
       } catch (error) {
         console.error("Error al obtener las categorías:", error);
@@ -31,29 +38,34 @@ function EditBookForm(props) {
 
 
   const handleEdit = () => {
-      const updatedBook = {
-        id: id,
-        title: editedTitle,
-        author: editedAuthor,
-        isbn: editedIsbn,
-        publication_year: editedPublication_year,
-        available_copies: editedAvailable_copies,
-        editorial: editedEditorial,
-        edition: editedEdition,
-        id_category: selectedCategory, 
-      };
-    axios.post("http://localhost/Proyecto_biblioteca/public/api/book_update", 
-        updatedBook,
-        {headers: {'Content-Type': 'multipart/form-data',
-        'Accept':'application/json'}}
-        ).then(response => {
-            console.log('response');
-            console.log(response);
-            window.location.reload();
-            navigate("/Proyecto_biblioteca/public/ListCards");
-        }).catch(error =>{
-            console.log(error);
-        });
+    const updatedBook = {
+      id: id,
+      title: editedTitle,
+      author: editedAuthor,
+      isbn: editedIsbn,
+      publication_year: editedPublication_year,
+      available_copies: editedAvailable_copies,
+      editorial: editedEditorial,
+      edition: editedEdition,
+      id_category: selectedCategory,
+    };
+    axios.post("http://localhost/Proyecto_biblioteca/public/api/book_update",
+      updatedBook,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        }
+      }
+    ).then(response => {
+      console.log('response');
+      console.log(response);
+      props.updateComponent();
+      navigate("/Proyecto_biblioteca/public/ListCards");
+    }).catch(error => {
+      console.log(error);
+    });
+    
     props.onHide();
   };
 
@@ -112,7 +124,7 @@ function EditBookForm(props) {
               onChange={(e) => setEditedEditorial(e.target.value)}
             />
           </Form.Group>
-          <Form.Group controlId="formEditorial">
+          <Form.Group controlId="formEdition">
             <Form.Label>Edition</Form.Label>
             <Form.Control
               type="text"
@@ -120,7 +132,7 @@ function EditBookForm(props) {
               onChange={(e) => setEditedEdition(e.target.value)}
             />
           </Form.Group>
-           <Form.Group controlId="formCategory">
+          <Form.Group controlId="formCategory">
             <Form.Label>Category</Form.Label>
             <Form.Control
               as="select"

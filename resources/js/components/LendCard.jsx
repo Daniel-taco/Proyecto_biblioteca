@@ -1,8 +1,7 @@
-import { useState, useEffect } from "react";
+import { useContext, useState } from "react";
+import { MyContext } from "../Context";
 import React from "react";
 import { Card, Button } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
-import EditUserForm from "./EditUserForm";
 
 function LendCard(props) {
     const id_user = props.id_user
@@ -10,7 +9,11 @@ function LendCard(props) {
     const expected_return_date = props.expected_return_date
     const id = props.id
     const lend_state= props.lend_state
-    const id_rol = sessionStorage.getItem("id_rol");
+    const { token, id_rol } = useContext(MyContext);
+
+    const updateComponent = () => {
+      props.updateComponent();
+    };
     
 
     const handleUpdate = () => {
@@ -24,12 +27,16 @@ function LendCard(props) {
 
         axios.post("http://localhost/Proyecto_biblioteca/public/api/lend_update", 
         updatedLend,
-        {headers: {'Content-Type': 'multipart/form-data',
-        'Accept':'application/json'}}
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          }
+        }
         ).then(response => {
           console.log('response');
           console.log(response);
-          window.location.reload();
+          updateComponent();
       }).catch(error =>{
           console.log(error);
       });
@@ -50,7 +57,7 @@ function LendCard(props) {
                 </Card.Text>
                 {/*<Button variant="primary">Go Somewhere</Button>*/}
             </Card.Body>
-      {id_rol === "1" && (    
+      {id_rol == "1" && (    
         <>
           <Button variant="primary" onClick={handleUpdate}>Delivered</Button>
         </>

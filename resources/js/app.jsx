@@ -14,10 +14,14 @@ import './bootstrap';
 
 import ReactDOM from 'react-dom/client';
 import Main from './components/Main'
+import { MyContextProvider } from './Context';
 import { BrowserRouter } from 'react-router-dom';
 
-ReactDOM.createRoot(document.getElementById('app')).render(
-    <BrowserRouter>
+ReactDOM.createRoot(document.getElementById('app')).render(    
+<BrowserRouter>
+    <MyContextProvider>
         <Main/>
-    </BrowserRouter>
+    </MyContextProvider>
+</BrowserRouter>
+    
 )

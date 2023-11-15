@@ -1,9 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useContext } from "react";
+import { MyContext } from "../Context";
 import { Modal, Button, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function EditCategoryForm(props) {
+  const { token } = useContext(MyContext);
   const navigate = useNavigate();
   const id = props.id
   const [editedCategory_name, setEditedCategory_name] = useState(props.category_name);
@@ -17,13 +19,16 @@ function EditCategoryForm(props) {
       };
     axios.post("http://localhost/Proyecto_biblioteca/public/api/category_update", 
         updatedCategory,
-        {headers: {'Content-Type': 'multipart/form-data',
-        'Accept':'application/json'}}
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          }
+        }
         ).then(response => {
             console.log('response');
             console.log(response);
-            window.location.reload();
-            navigate("/Proyecto_biblioteca/public/CategoryList");
+            props.updateComponent();
         }).catch(error =>{
             console.log(error);
         });

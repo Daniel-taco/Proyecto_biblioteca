@@ -1,10 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { useNavigate } from "react-router-dom";
+import { MyContext } from "../Context";
 import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 
 function Home() {
+  const { token, setGlobalToken } = useContext(MyContext);
+  const { id, setGlobalId } = useContext(MyContext);
+  const { id_rol, setGlobalId_rol } = useContext(MyContext);
     const navigate = useNavigate();
-    const token = sessionStorage.getItem("token");
     useEffect(()=>{
           if (!token) {
             navigate("/Proyecto_biblioteca/public/login"); 

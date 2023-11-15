@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { MyContext } from '../Context';
 import { Form, Button, Toast } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 function LendRequestForm() {
-  const token = sessionStorage.getItem('token');
+  const { token, id } = useContext(MyContext);
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    id_user: sessionStorage.getItem('id'),
+    id_user: id,
     lend_date: new Date().toISOString().split('T')[0],
     expected_return_date: '',
     lend_state: 'Active',
@@ -22,7 +23,12 @@ function LendRequestForm() {
     }
 
     axios
-      .get('http://localhost/Proyecto_biblioteca/public/api/book_index')
+      .get('http://localhost/Proyecto_biblioteca/public/api/book_index', {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        }
+      })
       .then((response) => {
         setBooks(response.data);
       })
@@ -56,8 +62,8 @@ function LendRequestForm() {
         {
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${sessionStorage.getItem('token')}`,
-          },
+            Authorization: `Bearer ${token}`,
+          }
         }
       );
 
@@ -70,8 +76,8 @@ function LendRequestForm() {
           {
             headers: {
               'Content-Type': 'application/json',
-              Authorization: `Bearer ${sessionStorage.getItem('token')}`,
-            },
+              Authorization: `Bearer ${token}`,
+            }
           }
         );
         await axios.post(
@@ -80,8 +86,8 @@ function LendRequestForm() {
           {
             headers: {
               'Content-Type': 'application/json',
-              Authorization: `Bearer ${sessionStorage.getItem('token')}`,
-            },
+              Authorization: `Bearer ${token}`,
+            }
           }
         );
       }
