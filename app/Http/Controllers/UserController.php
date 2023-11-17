@@ -99,7 +99,9 @@ class UserController extends Controller
         if (!$user) {
             return response()->json(['error' => 'User not found.'], 404);
         }
-    
+        if ($user->id_rol == 1) {
+            return response()->json(['error' => 'Cannot delete a user with Administrator Rol.'], 400);
+        }
         $user->delete();
     
         return response()->json(['message' => 'User deleted successfully.']);

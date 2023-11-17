@@ -69,6 +69,14 @@ function LendRequestForm() {
       setErrorMessages(['Please fill in all fields and select at least one book.']);
       return;
     }
+    const currentDate = new Date();
+    const expectedReturnDate = new Date(formData.expected_return_date + 'T00:00:00');
+
+    if (expectedReturnDate < currentDate) {
+      setErrorMessages(['Expected Return Date cannot be earlier than the current date.']);
+      return;
+    }
+
     try {
       const response = await axios.post(
         'http://localhost/Proyecto_biblioteca/public/api/lend_store',
@@ -110,6 +118,13 @@ function LendRequestForm() {
       navigate('/Proyecto_biblioteca/public/UserLends');
     } catch (error) {
       console.error(error);
+      if (error.response && error.response.data && error.response.data.error) {
+        const errorMessageString = error.response.data.error;
+        const errorMessagesArray = errorMessageString.split('\n').filter((line) => line.trim() !== '');
+        setErrorMessages(errorMessagesArray);
+      } else {
+        setErrorMessages(['An error occurred while adding the book.']);
+      }
     }
   };
 
