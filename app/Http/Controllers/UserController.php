@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Lend;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
@@ -88,8 +89,20 @@ class UserController extends Controller
      */
     public function destroy(Request $request)
     {
-        $user = User::where('id', $request->id)->delete();
-        return $user;
+        $userLendsCount = Lend::where('id_user', $request->id)->count();
+        if ($userLendsCount > 0) {
+            return response()->json(['error' => 'Cannot delete user with associated lends.'], 400);
+        }
+
+        $user = User::find($request->id);
+    
+        if (!$user) {
+            return response()->json(['error' => 'User not found.'], 404);
+        }
+    
+        $user->delete();
+    
+        return response()->json(['message' => 'User deleted successfully.']);
     }
     public function token(){
         return csrf_token();

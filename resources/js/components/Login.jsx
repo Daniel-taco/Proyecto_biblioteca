@@ -83,6 +83,7 @@ function Login() {
                 type="email"
                 placeholder="Enter email"
                 name="email"
+                required
                 value={formValue.email}
                 onChange={onChange}
               />
@@ -96,6 +97,7 @@ function Login() {
                 type="password"
                 placeholder="Password"
                 name="password"
+                required
                 value={formValue.password}
                 onChange={onChange}
               />

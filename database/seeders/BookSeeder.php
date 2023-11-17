@@ -25,6 +25,17 @@ class BookSeeder extends Seeder
         $book->save();
 
         $book = new Book();
+        $book->title = 'Rey Leon';
+        $book->author = 'Franccisco';
+        $book->isbn = '61681566615';
+        $book->publication_year = '1976';
+        $book->available_copies = '24';
+        $book->id_category = 3;
+        $book->editorial = 'Frunc';
+        $book->edition = '20';
+        $book->save();
+
+        $book = new Book();
         $book->title = 'Cenicienta';
         $book->author = 'Charles Perrault';
         $book->isbn = '789654123';
@@ -36,7 +47,7 @@ class BookSeeder extends Seeder
         $book->save();
 
         $book = new Book();
-        $book->title = 'La Balla Durmiente';
+        $book->title = 'La Bella Durmiente';
         $book->author = 'Charles Perrault';
         $book->isbn = '159786349';
         $book->publication_year = '1912';

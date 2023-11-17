@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Book;
 use App\Models\Book_category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -78,7 +79,21 @@ class BookCategoryController extends Controller
      */
     public function destroy(Request $request, Book_category $book_category)
     {
-        $category = Book_category::where('id', $request->id)->delete();
-        return $category;
+        $booksCount = Book::where('id_category', $request->id)->count();
+
+        if ($booksCount > 0) {
+
+            return response()->json(['error' => 'Cannot delete category with associated books.'], 400);
+        }
+
+        $category = Book_category::find($request->id);
+
+        if (!$category) {
+            return response()->json(['error' => 'Category not found.'], 404);
+        }
+
+        $category->delete();
+
+        return response()->json(['message' => 'Category deleted successfully.']);
     }
 }

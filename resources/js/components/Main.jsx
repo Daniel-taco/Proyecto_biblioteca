@@ -17,25 +17,22 @@ import AddCategoryForm from "./AddCategoryForm";
 function Main() {
   return (
     <Routes>
-      {/* Ruta Principal */}
       <Route path="/Proyecto_biblioteca/public/" element={<Menu />}>
-        <Route path="" element={<Home/>} />
+        <Route path="" element={<Home />} />
         <Route path="ListCards" element={<ListCards />} />
         <Route path="CategoryList" element={<CategoryList />} />
         <Route path="LendList" element={<LendList />} />
         <Route path="UserList" element={<UserList />} />
-        <Route path="AddCategory" element={<AddCategoryForm/>}/>
-        <Route path="AddBook" element={<AddBookForm/>}/>
-        <Route path="lends" element={<LendForm/>}/>
-        <Route path="profile" element={<Profile/>}/>
-        <Route path="UserLends" element={<UserLends/>}/>
+        <Route path="AddCategory" element={<AddCategoryForm />} />
+        <Route path="AddBook" element={<AddBookForm />} />
+        <Route path="lends" element={<LendForm />} />
+        <Route path="profile" element={<Profile />} />
+        <Route path="UserLends" element={<UserLends />} />
         <Route path="*" element={<Navigate replace to="/" />} />
       </Route>
 
-      {/* Ruta de Login */}
       <Route path="/Proyecto_biblioteca/public/login" element={<Login />} />
 
-      {/* Ruta de Registro */}
       <Route
         path="/Proyecto_biblioteca/public/register"
         element={<RegistrationForm />}

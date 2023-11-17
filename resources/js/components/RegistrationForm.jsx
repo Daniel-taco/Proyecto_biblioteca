@@ -3,7 +3,7 @@ import { MyContext } from '../Context';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import Biblioteca from '../../../public/biblioteca.jpg'
-import { Button, Form, Container, Row, Col } from 'react-bootstrap';
+import { Button, Form, Container, Row, Col, Alert } from 'react-bootstrap';
 
 const RegistrationForm = () => {
   const { token, setGlobalToken } = useContext(MyContext);
@@ -17,6 +17,7 @@ const RegistrationForm = () => {
     phone_number: '',
   });
   const navigate = useNavigate();
+  const [errorMessages, setErrorMessages] = useState([]);
 
   const onChange = (e) => {
     e.persist();
@@ -47,7 +48,14 @@ const RegistrationForm = () => {
         pathname: "/Proyecto_biblioteca/public",
       });
     } catch (error) {
-      console.log(error);
+      if (error.response && error.response.data && error.response.data.error) {
+        const errorMessageString = error.response.data.error;
+        const errorMessagesArray = errorMessageString.split('\n').filter((line) => line.trim() !== '');
+
+        setErrorMessages(errorMessagesArray);
+      } else {
+        setErrorMessages(['An error occurred while adding the book.']);
+      }
     }
   };
 
@@ -68,6 +76,7 @@ const RegistrationForm = () => {
 
       </div>
       <Container className="mt-5">
+
         <Row className="mb-4">
           <Col className="text-center">
             <Link to="/Proyecto_biblioteca/public/login">
@@ -79,6 +88,13 @@ const RegistrationForm = () => {
           <Col xs={12} sm={10} md={8} lg={6}>
             <h2 className="text-center mb-4">Create an Account</h2>
             <Form onSubmit={handleSubmit} style={{ color: 'black', borderColor: 'black', border: '1px solid black', borderRadius: '8px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)', padding: '5%', marginTop: '20%', zIndex: '+1', backgroundColor: 'white' }}>
+              {errorMessages.length > 0 && (
+                <Alert variant="danger">
+                  {errorMessages.map((message, index) => (
+                    <p key={index}>{message}</p>
+                  ))}
+                </Alert>
+              )}
               <Form.Group controlId="formName">
                 <Form.Label>Name</Form.Label>
                 <Form.Control

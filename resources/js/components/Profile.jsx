@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { MyContext } from '../Context';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
-import { Container, Card, Button, Form } from 'react-bootstrap';
+import { Container, Card, Button, Form, Alert } from 'react-bootstrap';
 
 function Profile() {
   const navigate = useNavigate();
@@ -11,6 +11,7 @@ function Profile() {
   const [userData, setUserData] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [editedUserData, setEditedUserData] = useState(null);
+  const [errorMessages, setErrorMessages] = useState([]);
 
   useEffect(() => {
     if (!token) {
@@ -40,6 +41,24 @@ function Profile() {
   };
 
   const handleSave = async () => {
+    const emptyFields = Object.values(editedUserData).filter(value => value === '');
+
+    if (emptyFields.length > 0) {
+      setErrorMessages(['Please fill in all fields.']);
+      return;
+    }
+
+    const phoneRegex = /^\d+$/;
+    if (!phoneRegex.test(editedUserData.phone_number)) {
+      setErrorMessages(['Please enter a valid phone number.']);
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(editedUserData.email)) {
+      setErrorMessages(['Please enter a valid email address.']);
+      return;
+    }
     try {
       setUserData(editedUserData);
       setIsEditing(false);
@@ -64,6 +83,7 @@ function Profile() {
   const handleCancel = () => {
     setEditedUserData(userData);
     setIsEditing(false);
+    setErrorMessages([]);
   };
 
   const handleInputChange = (e) => {
@@ -92,6 +112,13 @@ function Profile() {
         </Card>
       ) : (
         <Form>
+          {errorMessages.length > 0 && (
+            <Alert variant="danger">
+              {errorMessages.map((message, index) => (
+                <p key={index}>{message}</p>
+              ))}
+            </Alert>
+          )}
           <Form.Group controlId="formName">
             <Form.Label>Name</Form.Label>
             <Form.Control

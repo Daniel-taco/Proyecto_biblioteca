@@ -14,27 +14,12 @@ function Menu() {
   const { id_rol, setGlobalId_rol } = useContext(MyContext);
   const navigate = useNavigate();
   const handleLogout = () => {
-    axios.post("http://localhost/Proyecto_biblioteca/public/api/logout",
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  )
-      .then((response) => {
-        console.log("response");
-        console.log(response);
         setGlobalToken(null);
         setGlobalId(null);
         setGlobalId_rol(null);
         navigate({
           pathname: "/Proyecto_biblioteca/public/login",
         });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
   };
   return (
     <>

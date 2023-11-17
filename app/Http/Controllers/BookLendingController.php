@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Book;
 use App\Models\Book_lending;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -69,5 +70,13 @@ class BookLendingController extends Controller
     public function destroy(Book_lending $book_lending)
     {
         //
+    }
+    public function lendBooks($id)
+    {
+        $lendBooks = Book_lending::where('id_lend', $id)->get();
+        $bookIds = $lendBooks->pluck('id_book');
+        $books = Book::whereIn('id', $bookIds)->get();
+
+        return response()->json($books);
     }
 }

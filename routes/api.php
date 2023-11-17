@@ -25,7 +25,6 @@ Route::post('register',[RegisterController::class,'register']);
 Route::post('login',[RegisterController::class,'login']);
 
 Route::middleware('auth:api')->group(function () {
-    Route::post('logout',[RegisterController::class,'logout']);
 
     //Rutes Book
     Route::post('/book_store', [BookController::class, 'store']);
@@ -33,6 +32,7 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/book_update', [BookController::class,'update']);
     Route::post('/book_delete', [BookController::class,'destroy']);
     Route::post('/book_decrement_copies/{id}', [BookController::class, 'decrementCopies']);
+    Route::post('/book_increment_copies/{id}', [BookController::class, 'bookIncrementCopies']);
     Route::get('/book_index', [BookController::class,'index']);
 
     //Rutes User
@@ -46,6 +46,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/lend_index', [LendController::class,'index']);
     Route::post('/lend_update', [LendController::class,'update']);
     Route::post('/lend_show/{id}', [LendController::class,'show']);
+    Route::post('/lend_delete', [LendController::class,'destroy']);
 
     //Rutes Category
     Route::get('/category_index', [BookCategoryController::class,'index']);
@@ -55,6 +56,9 @@ Route::middleware('auth:api')->group(function () {
 
     //Rutes Book Lending
     Route::post('/book_lending_store', [BookLendingController::class,'store']);
+    Route::get('/book_lending_index', [BookLendingController::class,'index']);
+    Route::get('/lend_books/{id}', [BookLendingController::class, 'lendBooks']);
+    
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

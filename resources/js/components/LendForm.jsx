@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { MyContext } from '../Context';
-import { Form, Button, Toast } from 'react-bootstrap';
+import { Form, Button, Toast, Alert } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -16,6 +16,7 @@ function LendRequestForm() {
   });
   const [books, setBooks] = useState([]);
   const [showSuccessToast, setShowSuccessToast] = useState(false);
+  const [errorMessages, setErrorMessages] = useState([]);
 
   useEffect(() => {
     if (!token) {
@@ -30,7 +31,8 @@ function LendRequestForm() {
         }
       })
       .then((response) => {
-        setBooks(response.data);
+        const filteredBooks = response.data.filter(book => book.available_copies > 0);
+        setBooks(filteredBooks);
       })
       .catch((error) => {
         console.error('Error getting the list of books:', error);
@@ -55,6 +57,18 @@ function LendRequestForm() {
   };
 
   const handleAddLend = async () => {
+    const emptyFields = ['expected_return_date', 'selectedBooks'].filter(key => {
+      const value = formData[key];
+      if (Array.isArray(value)) {
+        return value.length === 0;
+      }
+      return value === '';
+    });
+
+    if (emptyFields.length > 0) {
+      setErrorMessages(['Please fill in all fields and select at least one book.']);
+      return;
+    }
     try {
       const response = await axios.post(
         'http://localhost/Proyecto_biblioteca/public/api/lend_store',
@@ -103,6 +117,13 @@ function LendRequestForm() {
     <div className="m-3">
       <h4 className="mb-4 font-weight-bold">APPLY FOR A LEND</h4>
       <Form>
+        {errorMessages.length > 0 && (
+          <Alert variant="danger">
+            {errorMessages.map((message, index) => (
+              <p key={index}>{message}</p>
+            ))}
+          </Alert>
+        )}
         <Form.Group controlId="formExpectedReturnDate">
           <Form.Label>Expected Return Date</Form.Label>
           <Form.Control
@@ -119,7 +140,7 @@ function LendRequestForm() {
             <Form.Check
               key={book.id}
               type="checkbox"
-              label={book.title}
+              label={book.title + ' | Edition ' + book.edition}
               checked={formData.selectedBooks.includes(book.id)}
               onChange={() => handleBookSelection(book.id)}
             />

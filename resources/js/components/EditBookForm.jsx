@@ -1,10 +1,11 @@
 import { useState, useEffect, useContext } from "react";
 import { MyContext } from "../Context";
-import { Modal, Button, Form } from "react-bootstrap";
+import { Modal, Button, Form, Alert } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function EditBookForm(props) {
+  const [validated, setValidated] = useState(false);
   const { token } = useContext(MyContext);
   const navigate = useNavigate();
   const id = props.id
@@ -17,6 +18,8 @@ function EditBookForm(props) {
   const [editedEdition, setEditedEdition] = useState(props.edition);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(props.id_category);
+  const [selectedCategoryName, setSelectedCategoryName] = useState("");
+  const [errorMessages, setErrorMessages] = useState([]);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -29,7 +32,7 @@ function EditBookForm(props) {
         });
         setCategories(response.data);
       } catch (error) {
-        console.error("Error al obtener las categorías:", error);
+        console.error("Error fetching categories:", error);
       }
     };
 
@@ -38,6 +41,26 @@ function EditBookForm(props) {
 
 
   const handleEdit = () => {
+    const form = document.getElementById("editBookForm");
+    if (form.checkValidity() === false) {
+      setValidated(true);
+      return;
+    }
+    if (editedAvailable_copies < 0) {
+      setErrorMessages(['The number of copies cannot be negative.']);
+      return;
+    }
+    const currentYear = new Date().getFullYear();
+    if (parseInt(editedPublication_year, 10) > currentYear) {
+      setErrorMessages(['Publication year cannot be greater than the current year.']);
+      return;
+    }
+    if (parseInt(editedEdition, 10) < 1) {
+      setErrorMessages(['Edition must be a positive number greater than or equal to 1.']);
+      return;
+    }
+
+
     const updatedBook = {
       id: id,
       title: editedTitle,
@@ -63,9 +86,16 @@ function EditBookForm(props) {
       props.updateComponent();
       navigate("/Proyecto_biblioteca/public/ListCards");
     }).catch(error => {
-      console.log(error);
+      if (error.response && error.response.data && error.response.data.error) {
+        const errorMessageString = error.response.data.error;
+        const errorMessagesArray = errorMessageString.split('\n').filter((line) => line.trim() !== '');
+
+        setErrorMessages(errorMessagesArray);
+      } else {
+        setErrorMessages(['An error occurred while adding the book.']);
+      }
     });
-    
+
     props.onHide();
   };
 
@@ -75,11 +105,19 @@ function EditBookForm(props) {
         <Modal.Title>Edit Book</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Form>
+        <Form noValidate validated={validated} id="editBookForm">
+          {errorMessages.length > 0 && (
+            <Alert variant="danger">
+              {errorMessages.map((message, index) => (
+                <p key={index}>{message}</p>
+              ))}
+            </Alert>
+          )}
           <Form.Group controlId="formTitle">
             <Form.Label>Title</Form.Label>
             <Form.Control
               type="text"
+              required
               defaultValue={editedTitle}
               onChange={(e) => setEditedTitle(e.target.value)}
             />
@@ -88,6 +126,7 @@ function EditBookForm(props) {
             <Form.Label>Author</Form.Label>
             <Form.Control
               type="text"
+              required
               value={editedAuthor}
               onChange={(e) => setEditedAuthor(e.target.value)}
             />
@@ -96,6 +135,7 @@ function EditBookForm(props) {
             <Form.Label>ISBN</Form.Label>
             <Form.Control
               type="text"
+              required
               value={editedIsbn}
               onChange={(e) => setEditedIsbn(e.target.value)}
             />
@@ -104,6 +144,7 @@ function EditBookForm(props) {
             <Form.Label>Publication year</Form.Label>
             <Form.Control
               type="text"
+              required
               value={editedPublication_year}
               onChange={(e) => setEditedPublication_year(e.target.value)}
             />
@@ -112,6 +153,7 @@ function EditBookForm(props) {
             <Form.Label>Available Copies</Form.Label>
             <Form.Control
               type="text"
+              required
               value={editedAvailable_copies}
               onChange={(e) => setEditedAvailable_copies(e.target.value)}
             />
@@ -128,6 +170,7 @@ function EditBookForm(props) {
             <Form.Label>Edition</Form.Label>
             <Form.Control
               type="text"
+              required
               value={editedEdition}
               onChange={(e) => setEditedEdition(e.target.value)}
             />

@@ -20,7 +20,7 @@ function ListCards() {
   const updateComponent = () => {
     setRefresh(!refresh);
   };
-  
+
   useEffect(() => {
     if (!token) {
       navigate("/Proyecto_biblioteca/public/login");
@@ -36,16 +36,13 @@ function ListCards() {
           }
         })
         .then(function (response) {
-          // manejar respuesta exitosa
           console.log(bookData);
           setBookData(response.data);
         })
         .catch(function (error) {
-          // manejar error
           console.log(error);
         })
         .finally(function () {
-          // siempre sera executado
         });
     }
     const fetchCategories = async () => {

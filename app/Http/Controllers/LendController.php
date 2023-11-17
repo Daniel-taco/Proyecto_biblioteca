@@ -86,8 +86,27 @@ class LendController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Lend $lend)
+    public function destroy(Request $request)
     {
-        //
+        // Busca el préstamo por su id
+        $lend = Lend::find($request->id);
+
+        // Verifica si el préstamo existe
+        if (!$lend) {
+            return response()->json(['error' => 'Lend not found'], 404);
+        }
+
+        try {
+            // Elimina el préstamo
+            $lend->delete();
+
+            // Realiza operaciones adicionales, como decrementar las copias disponibles del libro asociado
+            // ...
+
+            return response()->json(['message' => 'Lend deleted successfully']);
+        } catch (\Exception $e) {
+            // Maneja cualquier error que pueda ocurrir durante la eliminación
+            return response()->json(['error' => 'An error occurred while deleting the lend'], 500);
+        }
     }
 }

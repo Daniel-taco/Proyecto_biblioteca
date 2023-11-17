@@ -1,7 +1,7 @@
 import React, { useEffect, useContext } from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { MyContext } from "../Context";
-import { Container, Row, Col, Card, Button } from 'react-bootstrap';
+import { Container, Row, Col, Card, Button} from 'react-bootstrap';
 
 function Home() {
   const { token, setGlobalToken } = useContext(MyContext);
@@ -65,7 +65,7 @@ function Home() {
       </Row>
       <Row className="my-5">
         <Col md={12} className="text-center">
-          <Button variant="primary" href="/Proyecto_biblioteca/public/ListCards">
+          <Button variant="primary" as={Link} to="ListCards">
             Search Books
           </Button>
         </Col>

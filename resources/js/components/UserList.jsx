@@ -32,24 +32,18 @@ function UserList() {
         },
       })
         .then(function (response) {
-          // manejar respuesta exitosa
           console.log(userData);
           setUserData(response.data);
         })
         .catch(function (error) {
-          // manejar error
           console.log(error);
         })
         .finally(function () {
-          // siempre sera executado
+
         });
     }
     getUsers()
   }, [token, navigate, refresh])
-
-  /*const handleAddBookClick = () => {
-    navigate('/Proyecto_biblioteca/public/AddBook');
-  };*/
 
   if (!userData.length) return (
     <Spinner animation="border" role="status">

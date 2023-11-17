@@ -9,7 +9,6 @@ function CategoryList() {
   const [refresh, setRefresh] = useState(false);
   const navigate = useNavigate();
   const { token, id_rol } = useContext(MyContext);
-
   const [categoryData, setCategoryData] = useState([]);
 
   const updateComponent = () => {
@@ -33,16 +32,13 @@ function CategoryList() {
         }
       })
         .then(function (response) {
-          // manejar respuesta exitosa
           console.log(categoryData);
           setCategoryData(response.data);
         })
         .catch(function (error) {
-          // manejar error
           console.log(error);
         })
         .finally(function () {
-          // siempre sera executado
         });
     }
 

@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use App\Models\Book_lending;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class BookController extends Controller
 {
@@ -30,20 +32,44 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
+
+        if (Book::where('title', $request->title)->exists() && Book::where('edition', $request->edition)->exists()) {
+            return response()->json(['error' => 'The book already exists.'], 422);
+        }
+        if (Book::where('isbn', $request->isbn)->exists()) {
+            return response()->json(['error' => 'The ISBN already exists.'], 422);
+        }
+
+        $rules = [
+            'title' => 'required|string|max:255',
+            'author' => 'required|string|max:255',
+            'isbn' => 'required|string|max:20',
+            'publication_year' => 'required|integer|max:' . date('Y'),
+            'available_copies' => 'required|integer|min:0',
+            'id_category' => 'required|exists:book_categories,id',
+            'editorial' => 'required|string|max:255',
+            'edition' => 'required|string|max:255',
+        ];
+
+        
+        $validator = Validator::make($request->all(), $rules); 
+        
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 422);
+        }
+        
+
         $book = Book::create([
             'title' => $request->title,
             'author' => $request->author,
             'isbn' => $request->isbn,
-            'genre' => $request->genre,
             'publication_year' => $request->publication_year,
             'available_copies' => $request->available_copies,
             'id_category' => $request->id_category,
             'editorial' => $request->editorial,
             'edition' => $request->edition
         ]);
-        $book->save();
-
-        return $request;
+        return response()->json(['message' => 'Success created book'], 201);
     }
 
     /**
@@ -104,8 +130,25 @@ class BookController extends Controller
      */
     public function update(Request $request, Book $book)
     {
+        $rules = [
+            'title' => 'required|string|max:255',
+            'author' => 'required|string|max:255',
+            'isbn' => 'required|string|max:20',
+            'publication_year' => 'required|integer|max:' . date('Y'),
+            'available_copies' => 'required|integer|min:0',
+            'id_category' => 'required|exists:book_categories,id',
+            'editorial' => 'required|string|max:255',
+            'edition' => 'required|string|max:255',
+        ];
+    
+        $validator = Validator::make($request->all(), $rules);
+    
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 422);
+        }
+    
         $book = Book::where('id', $request->id)->first();
-
+    
         $book->update([
             'title' => $request->title,
             'author' => $request->author,
@@ -116,8 +159,7 @@ class BookController extends Controller
             'editorial' => $request->editorial,
             'edition' => $request->edition
         ]);
-
-        $book->save();
+    
         return $book;
     }
 
@@ -126,8 +168,20 @@ class BookController extends Controller
      */
     public function destroy(Request $request)
     {
-        $book = Book::where('id', $request->id)->delete();
-        return $book;
+        $bookLendingsCount = Book_lending::where('id_book', $request->id)->count();
+
+    if ($bookLendingsCount > 0) {
+        return response()->json(['error' => 'Cannot delete book with associated lendings.'], 400);
+    }
+    $book = Book::find($request->id);
+
+    if (!$book) {
+        return response()->json(['error' => 'Book not found.'], 404);
+    }
+
+    $book->delete();
+
+    return response()->json(['message' => 'Book deleted successfully.']);
     }
     public function decrementCopies($id)
     {
@@ -135,9 +189,20 @@ class BookController extends Controller
 
         if ($book) {
             $book->decrement('available_copies');
-            return response()->json(['message' => 'Campo available_copies decrementado con éxito'], 200);
+            return response()->json(['message' => 'Available_copies field decremented successfully'], 200);
         }
 
-        return response()->json(['error' => 'Libro no encontrado'], 404);
+        return response()->json(['error' => 'Book not found'], 404);
+    }
+    public function bookIncrementCopies($id)
+    {
+        $book = Book::find($id);
+
+        if ($book) {
+            $book->increment('available_copies');
+            return response()->json(['message' => 'Available_copies field incremented successfully'], 200);
+        }
+
+        return response()->json(['error' => 'Book not found'], 404);
     }
 }
