@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import axios from "axios";
 import { MyContext } from "../Context";
 import { useNavigate, Link } from "react-router-dom";
-import { Button, Form, Container, Row, Col } from "react-bootstrap";
+import { Button, Form, Container, Row, Col, Image } from "react-bootstrap";
 import Biblioteca from '../../../public/biblioteca.jpg'
 
 function Login() {
@@ -47,20 +47,20 @@ function Login() {
 
   return (
     <>
-    <div style={{ 
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: '100%',
-                backgroundImage: `url(${Biblioteca})`,
-                backgroundSize: 'cover',
-                backgroundRepeat: 'no-repeat',
-                opacity: 0.7,  
-                zIndex: -1,   
-            }}>
+    <Image
+        src={Biblioteca}
+        fluid
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+          zIndex: -1,
+        }}
+      />
                 
-    </div>
     <Container className="mt-5">
       <Row className="mb-4">
         <Col className="text-center">

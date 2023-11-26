@@ -3,7 +3,7 @@ import { MyContext } from '../Context';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import Biblioteca from '../../../public/biblioteca.jpg'
-import { Button, Form, Container, Row, Col, Alert } from 'react-bootstrap';
+import { Button, Form, Container, Row, Col, Alert, Image } from 'react-bootstrap';
 
 const RegistrationForm = () => {
   const { token, setGlobalToken } = useContext(MyContext);
@@ -61,20 +61,19 @@ const RegistrationForm = () => {
 
   return (
     <>
-      <div style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        backgroundImage: `url(${Biblioteca})`,
-        backgroundSize: 'cover',
-        backgroundRepeat: 'no-repeat',
-        opacity: 0.7,
-        zIndex: -1,
-      }}>
-
-      </div>
+      <Image
+        src={Biblioteca}
+        fluid
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+          zIndex: -1,
+        }}
+      />
       <Container className="mt-5">
 
         <Row className="mb-4">
